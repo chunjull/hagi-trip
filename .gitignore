@@ -1,7 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://git-scm.com/docs/gitignore for pattern syntax.
 
 # dependencies
-/node_modules
+/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -11,30 +11,42 @@
 !.yarn/versions
 
 # testing
-/coverage
+/coverage/
+/.vitest/
 
 # next.js
 /.next/
 /out/
+/.next-profiles/
+next-panic-*.log
 
 # production
-/build
+/build/
 
-# misc
+# local editor and operating-system files
+/.idea/
+/.vscode/
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# local certificates
 *.pem
 
 # debug
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# environment files may contain secrets; commit only a value-free template
 .env*
+!.env.example
 
 # vercel
-.vercel
+/.vercel/
 
 # typescript
 *.tsbuildinfo
