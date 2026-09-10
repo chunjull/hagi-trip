@@ -37,7 +37,7 @@
 | 里程碑          | 狀態               | 完成條件                                   |
 | --------------- | ------------------ | ------------------------------------------ |
 | M0 專案基礎     | 進行中（稽核補強） | 開發、測試、lint 與 static export 設定完成 |
-| M1 資料模型     | 尚未開始           | 官方資料可由 TypeScript 靜態資料完整表達   |
+| M1 資料模型     | 已完成             | 官方資料可由 TypeScript 靜態資料完整表達   |
 | M2 Domain 規則  | 尚未開始           | 核心時間與狀態測試全部通過                 |
 | M3 地圖首頁     | 尚未開始           | 手機可查看所有 marker、狀態與詳情          |
 | M4 日期清單     | 尚未開始           | 可查指定日期並正確處理 11/28               |
@@ -67,25 +67,25 @@
 
 ## M1 — 官方資料與資料模型
 
-- [ ] `P0 DATA` 建立 `PlaceCategory`、`PlaceStatusMode`、`PlaceStatus`、`FeatureKind` 型別。
-- [ ] `P0 DATA` 建立 `TimeSlot`、`BusinessSchedule`、date override 與 `Place` 型別。
-- [ ] `P0 DATA` 建立 `ScheduledEvent` 與 `SiteMode` 型別。
-- [ ] `P0 DATA` 對照官方活動頁，列出全部實體地點與 feature，避免同址 marker 重複。
-- [ ] `P0 DATA` 整理一般營業時間、固定休業日、分段營業與 open-ended 時段。
-- [ ] `P0 DATA` 整理 L.O.、最終入場、最終受付與其他 `usableUntil`。
-- [ ] `P0 DATA` 整理已知特殊營業日、休業日及 date overrides。
-- [ ] `P0 DATA` 建立 `places.ts`、`scheduled-events.ts`、`site-config.ts`。
-- [ ] `P0 DATA` 逐日列出「〇〇のはなし」官方運行日期，不以週末或假日推算。
-- [ ] `P1 DATA` 整理 collaboration active period、住宿合作日與協力店標記。
-- [ ] `P0 DATA` 逐點人工核對地址、`mapQuery` 與座標；無法唯一確認時保留 `null`。
-- [ ] `P1 DATA` 加入小型 dev-time data validation（ID、時段、座標與活動日期）。
-- [ ] `P1 DOCS` 建立 `src/data/CHANGELOG.md`，記錄官方資料變更來源及影響。
+- [x] `P0 DATA` 建立 `PlaceCategory`、`PlaceStatusMode`、`PlaceStatus`、`FeatureKind` 型別。
+- [x] `P0 DATA` 建立 `TimeSlot`、`BusinessSchedule`、date override 與 `Place` 型別。
+- [x] `P0 DATA` 建立 `ScheduledEvent` 與 `SiteMode` 型別。
+- [x] `P0 DATA` 對照官方活動頁，列出全部實體地點與 feature，避免同址 marker 重複。
+- [x] `P0 DATA` 整理一般營業時間、固定休業日、分段營業與 open-ended 時段。
+- [x] `P0 DATA` 整理 L.O.、最終入場、最終受付與其他 `usableUntil`。
+- [x] `P0 DATA` 整理已知特殊營業日、休業日及 date overrides。
+- [x] `P0 DATA` 建立 `places.ts`、`scheduled-events.ts`、`site-config.ts`。
+- [x] `P0 DATA` 逐日列出「〇〇のはなし」官方運行日期，不以週末或假日推算。
+- [x] `P1 DATA` 整理 collaboration active period、住宿合作日與協力店標記。
+- [x] `P0 DATA` 逐點人工核對地址、`mapQuery` 與座標；無法唯一確認時保留 `null`。
+- [x] `P1 DATA` 加入小型 dev-time data validation（ID、時段、座標與活動日期）。
+- [x] `P1 DOCS` 建立 `src/data/CHANGELOG.md`，記錄官方資料變更來源及影響。
 
 ### M1 驗收
 
-- [ ] 所有資料皆可追溯至官方來源，沒有自行猜測日期、時間或座標。
-- [ ] JR 萩駅、JR 東萩駅、萩・石見空港、松陰神社、旧久保田家住宅符合既定特殊規則。
-- [ ] 住宿與 JR 萩駅使用 `statusMode: "none"`；協力店仍保留原本 place category。
+- [x] 所有資料皆可追溯至官方來源，沒有自行猜測日期、時間或座標。
+- [x] JR 萩駅、JR 東萩駅、萩・石見空港、松陰神社、旧久保田家住宅符合既定特殊規則。
+- [x] 住宿與 JR 萩駅使用 `statusMode: "none"`；協力店仍保留原本 place category。
 
 ## M2 — Domain 規則與單元測試
 
