@@ -40,7 +40,7 @@
 | M1 資料模型     | 已完成   | 官方資料可由 TypeScript 靜態資料完整表達   |
 | M2 Domain 規則  | 已完成   | 核心時間與狀態測試全部通過                 |
 | M3 地圖首頁     | 已完成   | 手機可查看所有 marker、狀態與詳情          |
-| M4 日期清單     | 尚未開始 | 可查指定日期並正確處理 11/28               |
+| M4 日期清單     | 已完成   | 可查指定日期並正確處理 11/28               |
 | M5 完整活動資訊 | 尚未開始 | 列車、合作期間、住宿與協力店資訊可查       |
 | M6 上線驗收     | 尚未開始 | QA、static build 與部署完成                |
 
@@ -126,18 +126,18 @@
 
 ## M4 — 日期清單 `/list`
 
-- [ ] `P0 UI` 建立活動期間內的單日 Date Picker。
-- [ ] `P0 UI` 列出所有景點的當日營業／休息、時段及特殊資訊。
-- [ ] `P0 UI` 未來日期不顯示「距離打烊 1／2 小時」的即時狀態。
-- [ ] `P0 UI` 顯示 scheduled event 當日運行資訊；無運行時明示「本日無運行」。
-- [ ] `P0 UI` 完成 2026-11-28 blocking dialog，選擇有效日期後才關閉。
-- [ ] `P0 A11Y` dialog 使用正確 role、aria-modal、初始 focus、focus trap 與背景鎖定。
-- [ ] `P1 UI` 評估並在不增加 static export 複雜度時支援 `?date=YYYY-MM-DD`。
+- [x] `P0 UI` 建立活動期間內的單日 Date Picker。
+- [x] `P0 UI` 列出所有景點的當日營業／休息、時段及特殊資訊。
+- [x] `P0 UI` 未來日期不顯示「距離打烊 1／2 小時」的即時狀態。
+- [x] `P0 UI` 顯示 scheduled event 當日運行資訊；無運行時明示「本日無運行」。
+- [x] `P0 UI` 完成 2026-11-28 blocking dialog，選擇有效日期後才關閉。
+- [x] `P0 A11Y` dialog 使用正確 role、aria-modal、初始 focus、focus trap 與背景鎖定。
+- [x] `P1 UI` 評估並在不增加 static export 複雜度時支援 `?date=YYYY-MM-DD`。
 
 ### M4 驗收
 
-- [ ] 使用者能回答「指定日期有哪些地方營業、幾點可以利用」。
-- [ ] 2026-11-28 無法繞過 dialog 操作背景，也不會隱藏 scheduled event 資料。
+- [x] 使用者能回答「指定日期有哪些地方營業、幾點可以利用」。
+- [x] 2026-11-28 無法繞過 dialog 操作背景，也不會隱藏 scheduled event 資料。
 
 ## M5 — 完整資訊與 About
 
