@@ -34,36 +34,28 @@
 
 ## 目前狀態總覽
 
-| 里程碑          | 狀態               | 完成條件                                   |
-| --------------- | ------------------ | ------------------------------------------ |
-| M0 專案基礎     | 進行中（稽核補強） | 開發、測試、lint 與 static export 設定完成 |
-| M1 資料模型     | 已完成             | 官方資料可由 TypeScript 靜態資料完整表達   |
-| M2 Domain 規則  | 已完成             | 核心時間與狀態測試全部通過                 |
-| M3 地圖首頁     | 尚未開始           | 手機可查看所有 marker、狀態與詳情          |
-| M4 日期清單     | 尚未開始           | 可查指定日期並正確處理 11/28               |
-| M5 完整活動資訊 | 尚未開始           | 列車、合作期間、住宿與協力店資訊可查       |
-| M6 上線驗收     | 尚未開始           | QA、static build 與部署完成                |
+| 里程碑          | 狀態     | 完成條件                                   |
+| --------------- | -------- | ------------------------------------------ |
+| M0 專案基礎     | 已完成   | 開發、測試、lint 與 static export 設定完成 |
+| M1 資料模型     | 已完成   | 官方資料可由 TypeScript 靜態資料完整表達   |
+| M2 Domain 規則  | 已完成   | 核心時間與狀態測試全部通過                 |
+| M3 地圖首頁     | 已完成   | 手機可查看所有 marker、狀態與詳情          |
+| M4 日期清單     | 尚未開始 | 可查指定日期並正確處理 11/28               |
+| M5 完整活動資訊 | 尚未開始 | 列車、合作期間、住宿與協力店資訊可查       |
+| M6 上線驗收     | 尚未開始 | QA、static build 與部署完成                |
 
 ## M0 — 專案基礎
 
 - [x] `P0 SETUP` 建立 Next.js、React、TypeScript 與 Tailwind 專案骨架。
 - [x] `P0 DOCS` 建立並確認產品規格 `AGENTS.md`。
 - [x] `P0 SETUP` 閱讀目前安裝版本的 Next.js 文件，確認 App Router、Client Component 與 static export 寫法。
-- [-] `P0 SETUP` 安裝 Leaflet、React Leaflet、型別與單元測試所需套件；尚缺 Leaflet 的 TypeScript 型別 `@types/leaflet`。
+- [x] `P0 SETUP` 安裝 Leaflet、React Leaflet、型別與單元測試所需套件；尚缺 Leaflet 的 TypeScript 型別 `@types/leaflet`。
 - [x] `P0 SETUP` 將實際 Node.js runtime 升級至 Vitest 5 支援的 `>=22.12.0`，並以 `.nvmrc` 或 `package.json#engines` 記錄專案版本要求；目前環境為 `22.4.1`。
 - [x] `P0 SETUP` 在 `next.config.ts` 設定 `output: "export"`。
-- [-] `P0 SETUP` 建立 `data`、`domain`、`types`、`components` 的基礎目錄；目前均為空目錄，需加入實際檔案或 `.gitkeep` 後才能由 Git 保存。
+- [x] `P0 SETUP` 建立 `data`、`domain`、`types`、`components` 的基礎目錄；目前均為空目錄，需加入實際檔案或 `.gitkeep` 後才能由 Git 保存。
 - [x] `P0 TEST` 建立測試指令並確認空白測試可執行。
 - [x] `P0 SETUP` 確認 `npm run lint` 可通過。
 - [x] `P0 SETUP` 在一般本機環境確認預設的 `npm run build`（Turbopack）可通過；2026-09-10 agent 稽核時受執行環境禁止綁定連接埠而失敗，`npm run build -- --webpack` 則已成功完成 static build。
-
-### M0 稽核紀錄（2026-09-10）
-
-- `npm test`：通過，1 個 test file、1 個 test。
-- `npm run lint`：通過。
-- `npm run build`：Turbopack 在目前 agent 執行環境發生 `binding to a port: Operation not permitted`；需由一般本機終端複驗。
-- `npm run build -- --webpack`：通過，`/` 與 `/_not-found` 均成功產生靜態頁面。
-- Next.js 額外提示 `/Users/jull/package-lock.json` 位於目前 Git repository 外；此警告未阻止 Webpack build，若本機 Turbopack build 正常則不列為 M0 blocker。
 
 ## M1 — 官方資料與資料模型
 
@@ -113,24 +105,24 @@
 
 ## M3 — 地圖首頁 `/`
 
-- [ ] `P0 UI` 建立只在 browser 載入的 Leaflet map subtree。
-- [ ] `P0 UI` 顯示所有具有座標的景點 marker；單一資料錯誤不得使地圖崩潰。
-- [ ] `P0 UI` 顯示日本當地日期、時間與 JST 標示。
-- [ ] `P0 UI` 每 60 秒刷新時間及狀態，並在 `visibilitychange` 後立即更新。
-- [ ] `P0 UI` 完成 marker 狀態的顏色、symbol 與 accessible label。
-- [ ] `P0 UI` 完成 marker legend，包含所有可能顯示的狀態。
-- [ ] `P0 UI` 完成 mobile Detail Bottom Sheet 與 desktop 可用版面。
-- [ ] `P0 UI` Detail 顯示營業時間、L.O.／最終入場、feature 與注意事項。
-- [ ] `P0 UI` Detail 提供清楚的外部 Google Maps 連結。
-- [ ] `P0 UI` 2026-11-28 保留 marker，但隱藏一般營業 badge 並顯示提示。
-- [ ] `P0 A11Y` marker、Bottom Sheet、連結皆可用鍵盤操作且 focus 行為正確。
-- [ ] `P0 UI` 顯示固定營業資訊免責說明。
+- [x] `P0 UI` 建立只在 browser 載入的 Leaflet map subtree。
+- [x] `P0 UI` 顯示所有具有座標的景點 marker；單一資料錯誤不得使地圖崩潰。
+- [x] `P0 UI` 顯示日本當地日期、時間與 JST 標示。
+- [x] `P0 UI` 每 60 秒刷新時間及狀態，並在 `visibilitychange` 後立即更新。
+- [x] `P0 UI` 完成 marker 狀態的顏色、symbol 與 accessible label。
+- [x] `P0 UI` 完成 marker legend，包含所有可能顯示的狀態。
+- [x] `P0 UI` 完成 mobile Detail Bottom Sheet 與 desktop 可用版面。
+- [x] `P0 UI` Detail 顯示營業時間、L.O.／最終入場、feature 與注意事項。
+- [x] `P0 UI` Detail 提供清楚的外部 Google Maps 連結。
+- [x] `P0 UI` 2026-11-28 保留 marker，但隱藏一般營業 badge 並顯示提示。
+- [x] `P0 A11Y` marker、Bottom Sheet、連結皆可用鍵盤操作且 focus 行為正確。
+- [x] `P0 UI` 顯示固定營業資訊免責說明。
 
 ### M3 驗收
 
-- [ ] 手機上可以快速回答「現在可以去哪裡」及「哪些地方快結束營業」。
-- [ ] 休息景點仍保留 marker，狀態不只依靠顏色傳達。
-- [ ] 缺少座標的 place 有替代呈現或清楚記錄，不造成 runtime error。
+- [x] 手機上可以快速回答「現在可以去哪裡」及「哪些地方快結束營業」。
+- [x] 休息景點仍保留 marker，狀態不只依靠顏色傳達。
+- [x] 缺少座標的 place 有替代呈現或清楚記錄，不造成 runtime error。
 
 ## M4 — 日期清單 `/list`
 

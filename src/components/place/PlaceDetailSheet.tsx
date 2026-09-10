@@ -1,0 +1,208 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+import BusinessHours from "@/components/place/BusinessHours";
+import { buildGoogleMapsUrl } from "@/components/place/place-display";
+import PlaceStatusBadge from "@/components/place/PlaceStatusBadge";
+import { getScheduleForDate } from "@/domain/schedule/get-schedule-for-date";
+import type { BusinessSchedule, DailySchedule, IsoDate, Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
+
+interface PlaceDetailSheetProps {
+  businessInfoSuppressed: boolean;
+  now: ZonedDateTimeParts | null;
+  onClosed: () => void;
+  place: Place | null;
+  status: PlaceStatus | null;
+}
+
+interface ScheduleOwner {
+  schedule?: BusinessSchedule;
+}
+
+const getScheduleSafely = (owner: ScheduleOwner, date: IsoDate): DailySchedule | undefined => {
+  try {
+    return getScheduleForDate(owner, date);
+  } catch {
+    return undefined;
+  }
+};
+
+const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status }: PlaceDetailSheetProps) => {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog) {
+      return;
+    }
+
+    if (!place) {
+      if (dialog.open) {
+        dialog.close();
+      }
+      return;
+    }
+
+    if (!dialog.open) {
+      dialog.showModal();
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusFrame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [place]);
+
+  const mapUrl = place ? buildGoogleMapsUrl(place.mapQuery) : null;
+  const placeSchedule = place && now && !businessInfoSuppressed ? getScheduleSafely(place, now.date) : undefined;
+
+  return (
+    <dialog
+      aria-labelledby="place-detail-title"
+      aria-modal="true"
+      className="fixed inset-x-0 bottom-0 top-auto m-0 max-h-[85dvh] w-full max-w-none rounded-t-3xl bg-white p-0 text-slate-950 shadow-2xl backdrop:bg-slate-950/55 sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-full sm:w-[min(30rem,100vw)] sm:rounded-none"
+      ref={dialogRef}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          event.currentTarget.close();
+        }
+      }}
+      onClose={onClosed}
+    >
+      {place ? (
+        <article className="flex max-h-[85dvh] flex-col sm:h-full sm:max-h-full">
+          <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4">
+            <div>
+              <p className="text-xs font-medium text-slate-500">景點詳細資訊</p>
+              <h2 className="mt-1 text-xl font-semibold leading-tight" id="place-detail-title" lang="ja">
+                {place.name}
+              </h2>
+            </div>
+            <button
+              aria-label={`關閉 ${place.name} 詳細資訊`}
+              className="grid size-11 shrink-0 place-items-center rounded-full border border-slate-300 bg-white text-xl font-medium text-slate-800 hover:bg-slate-100 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+              ref={closeButtonRef}
+              type="button"
+              onClick={() => dialogRef.current?.close()}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+
+          <div className="overflow-y-auto px-5 py-5">
+            <div className="space-y-4">
+              {businessInfoSuppressed ? (
+                <p className="rounded-xl border border-sky-300 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-950">
+                  本日不提供一般營業狀態與當日營業時間，請向各設施官方確認。
+                </p>
+              ) : place.statusMode === "none" ? (
+                <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700">此地點不提供即時營業狀態。</p>
+              ) : status === null ? (
+                <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700">營業狀態暫時無法判斷。</p>
+              ) : (
+                <PlaceStatusBadge status={status} />
+              )}
+
+              <dl className="grid gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <div>
+                  <dt className="text-xs font-medium text-slate-500">地址</dt>
+                  <dd className="mt-1 text-sm leading-6" lang="ja">
+                    {place.address}
+                  </dd>
+                </div>
+
+                {place.statusBasisLabel ? (
+                  <div>
+                    <dt className="text-xs font-medium text-slate-500">Marker 狀態判斷基準</dt>
+                    <dd className="mt-1 text-sm leading-6" lang="ja">
+                      {place.statusBasisLabel}
+                    </dd>
+                  </div>
+                ) : null}
+
+                {!businessInfoSuppressed && place.statusMode === "businessHours" && now ? <BusinessHours schedule={placeSchedule} /> : null}
+              </dl>
+
+              {place.description ? (
+                <p className="text-sm leading-7 text-slate-700">{place.description}</p>
+              ) : null}
+            </div>
+
+            {place.features && place.features.length > 0 ? (
+              <section aria-labelledby="place-features-title" className="mt-7">
+                <h3 className="text-base font-semibold" id="place-features-title">
+                  聯名內容
+                </h3>
+                <ul className="mt-3 space-y-3">
+                  {place.features.map((feature) => {
+                    const featureSchedule = feature.schedule && now && !businessInfoSuppressed ? getScheduleSafely(feature, now.date) : undefined;
+
+                    return (
+                      <li className="rounded-2xl border border-slate-200 p-4" key={feature.id}>
+                        <h4 className="font-semibold leading-6" lang="ja">
+                          {feature.title}
+                        </h4>
+                        {feature.description ? (
+                          <p className="mt-2 text-sm leading-6 text-slate-700">{feature.description}</p>
+                        ) : null}
+                        {!businessInfoSuppressed && feature.schedule && now ? (
+                          <dl className="mt-3">
+                            <BusinessHours label="本日提供時間" schedule={featureSchedule} />
+                          </dl>
+                        ) : null}
+                        {feature.notices && feature.notices.length > 0 ? (
+                          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-600">
+                            {feature.notices.map((notice) => (
+                              <li key={notice}>{notice}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ) : null}
+
+            {place.notices && place.notices.length > 0 ? (
+              <section aria-labelledby="place-notices-title" className="mt-7 rounded-2xl bg-amber-50 p-4 text-amber-950">
+                <h3 className="text-sm font-semibold" id="place-notices-title">
+                  注意事項
+                </h3>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6">
+                  {place.notices.map((notice) => (
+                    <li key={notice}>{notice}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <div className="mt-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              {mapUrl ? (
+                <a
+                  className="flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+                  href={mapUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  在 Google Maps 開啟<span className="sr-only">{place.name}（新分頁）</span>
+                </a>
+              ) : (
+                <p className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm text-slate-700">地圖連結暫時無法使用。</p>
+              )}
+            </div>
+          </div>
+        </article>
+      ) : null}
+    </dialog>
+  );
+};
+
+export default PlaceDetailSheet;
