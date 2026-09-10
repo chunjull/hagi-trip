@@ -1,10 +1,10 @@
 import { PLACES } from "@/data/places";
 import { SCHEDULED_EVENTS } from "@/data/scheduled-events";
 import { SITE_CONFIG } from "@/data/site-config";
+import { parseClockTime as parseClockTimeToMinutes } from "@/domain/datetime/clock-time";
 import type { BusinessSchedule, DateRange, IsoDate, Place, ScheduledEvent, SourceRef, TimeSlot, WeekdayKey } from "@/types";
 
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const CLOCK_TIME_PATTERN = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 const WEEKDAYS: WeekdayKey[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
 interface ValidationSiteConfig {
@@ -40,13 +40,12 @@ const isValidIsoDate = (value: string): value is IsoDate => {
 };
 
 const parseClockTime = (value: string, path: string, issues: string[]): number | null => {
-  if (!CLOCK_TIME_PATTERN.test(value)) {
+  try {
+    return parseClockTimeToMinutes(value);
+  } catch {
     issues.push(`${path}: invalid clock time "${value}"; expected HH:mm.`);
     return null;
   }
-
-  const [hours, minutes] = value.split(":").map(Number);
-  return hours * 60 + minutes;
 };
 
 const isDateWithin = (date: IsoDate, range: DateRange): boolean => date >= range.start && date <= range.end;

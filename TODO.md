@@ -38,7 +38,7 @@
 | --------------- | ------------------ | ------------------------------------------ |
 | M0 專案基礎     | 進行中（稽核補強） | 開發、測試、lint 與 static export 設定完成 |
 | M1 資料模型     | 已完成             | 官方資料可由 TypeScript 靜態資料完整表達   |
-| M2 Domain 規則  | 尚未開始           | 核心時間與狀態測試全部通過                 |
+| M2 Domain 規則  | 已完成             | 核心時間與狀態測試全部通過                 |
 | M3 地圖首頁     | 尚未開始           | 手機可查看所有 marker、狀態與詳情          |
 | M4 日期清單     | 尚未開始           | 可查指定日期並正確處理 11/28               |
 | M5 完整活動資訊 | 尚未開始           | 列車、合作期間、住宿與協力店資訊可查       |
@@ -89,27 +89,27 @@
 
 ## M2 — Domain 規則與單元測試
 
-- [ ] `P0 DOMAIN` 實作 `getEventLocalNow()`，固定使用 `Asia/Tokyo`。
-- [ ] `P0 DOMAIN` 實作時間字串解析與分鐘比較；解析失敗不可 fallback 到瀏覽器時區。
-- [ ] `P0 DOMAIN` 實作 `getScheduleForDate()`，確保 override 優先且保留 `null` 休業日。
-- [ ] `P0 DOMAIN` 實作 `getEffectiveCloseTime()`，以 `usableUntil ?? close` 判斷。
-- [ ] `P0 DOMAIN` 實作 `getPlaceStatus()` 的所有狀態與分段營業行為。
-- [ ] `P0 DOMAIN` 實作 `isBusinessInfoSuppressedDate()` 與 2026-11-28 規則。
-- [ ] `P1 DOMAIN` 實作 collaboration state utilities。
-- [ ] `P1 DOMAIN` 實作 scheduled event 查詢 utilities。
+- [x] `P0 DOMAIN` 實作 `getEventLocalNow()`，固定使用 `Asia/Tokyo`。
+- [x] `P0 DOMAIN` 實作時間字串解析與分鐘比較；解析失敗不可 fallback 到瀏覽器時區。
+- [x] `P0 DOMAIN` 實作 `getScheduleForDate()`，確保 override 優先且保留 `null` 休業日。
+- [x] `P0 DOMAIN` 實作 `getEffectiveCloseTime()`，以 `usableUntil ?? close` 判斷。
+- [x] `P0 DOMAIN` 實作 `getPlaceStatus()` 的所有狀態與分段營業行為。
+- [x] `P0 DOMAIN` 實作 `isBusinessInfoSuppressedDate()` 與 2026-11-28 規則。
+- [x] `P1 DOMAIN` 實作 collaboration state utilities。
+- [x] `P1 DOMAIN` 實作 scheduled event 查詢 utilities。
 
 ### 必要單元測試
 
-- [ ] `P0 TEST` 固定時段 10:00–18:00 的所有邊界狀態。
-- [ ] `P0 TEST` weekly schedule 中的 `null` 回傳 `CLOSED_TODAY`。
-- [ ] `P0 TEST` L.O. 14:00 在 13:59 與 14:00 的狀態。
-- [ ] `P0 TEST` 12/29 override 優先於 regular schedule。
-- [ ] `P0 TEST` 分段營業第一段、空檔、第二段與結束後狀態。
-- [ ] `P0 TEST` open-ended slot 開店前、開店後與休業日狀態。
-- [ ] `P0 TEST` 2026-11-28 一般營業狀態為 `HIDDEN`，scheduled event 仍可查。
-- [ ] `P0 TEST` `statusMode: "none"` 回傳 `HIDDEN`。
-- [ ] `P1 TEST` scheduled event 僅依 `serviceDates` 判斷。
-- [ ] `P0 TEST` 全部 domain tests 通過。
+- [x] `P0 TEST` 固定時段 10:00–18:00 的所有邊界狀態。
+- [x] `P0 TEST` weekly schedule 中的 `null` 回傳 `CLOSED_TODAY`。
+- [x] `P0 TEST` L.O. 14:00 在 13:59 與 14:00 的狀態。
+- [x] `P0 TEST` 12/29 override 優先於 regular schedule。
+- [x] `P0 TEST` 分段營業第一段、空檔、第二段與結束後狀態。
+- [x] `P0 TEST` open-ended slot 開店前、開店後與休業日狀態。
+- [x] `P0 TEST` 2026-11-28 一般營業狀態為 `HIDDEN`，scheduled event 仍可查。
+- [x] `P0 TEST` `statusMode: "none"` 回傳 `HIDDEN`。
+- [x] `P1 TEST` scheduled event 僅依 `serviceDates` 判斷。
+- [x] `P0 TEST` 全部 domain tests 通過。
 
 ## M3 — 地圖首頁 `/`
 

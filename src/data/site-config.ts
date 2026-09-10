@@ -1,8 +1,10 @@
 import type { IsoDate, SiteMode } from "@/types";
 
+export const EVENT_TIME_ZONE = "Asia/Tokyo" as const;
+
 export const SITE_CONFIG = {
   eventName: "銀魂暦",
-  eventTimeZone: "Asia/Tokyo",
+  eventTimeZone: EVENT_TIME_ZONE,
 
   eventPeriod: {
     start: "2026-10-01",

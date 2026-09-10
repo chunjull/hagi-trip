@@ -21,6 +21,8 @@ export interface DateRange {
   end: IsoDate;
 }
 
+export type CollaborationState = "UPCOMING" | "ACTIVE" | "ENDED";
+
 export interface FixedTimeSlot {
   open: ClockTime;
   close: ClockTime;
@@ -139,3 +141,10 @@ export type SiteMode =
       type: "archive";
       frozenDateTime: string;
     };
+
+export interface ZonedDateTimeParts {
+  date: IsoDate;
+  weekday: WeekdayKey;
+  hours: number;
+  minutes: number;
+}
