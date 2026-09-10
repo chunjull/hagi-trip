@@ -1,0 +1,52 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+
+import { PLACES } from "@/data/places";
+import type { Place } from "@/types";
+import PlaceFeatureList from "./PlaceFeatureList";
+
+const getPlace = (id: string): Place => {
+  const place = PLACES.find((candidate) => candidate.id === id);
+
+  if (!place) {
+    throw new Error(`Missing test place: ${id}`);
+  }
+
+  return place;
+};
+
+const renderFeatures = (placeId: string, date: "2026-10-01" | "2026-10-02" | "2026-10-09"): string => {
+  const place = getPlace(placeId);
+  return renderToStaticMarkup(<PlaceFeatureList date={date} features={place.features ?? []} />);
+};
+
+describe("PlaceFeatureList", () => {
+  it("renders the airport shop split schedule from feature data", () => {
+    expect(renderFeatures("hagi-iwami-airport", "2026-10-01")).toContain("09:50–12:00／15:00–18:00");
+  });
+
+  it("renders the shrine final admission and kimono return details", () => {
+    expect(renderFeatures("shoin-jinja", "2026-10-01")).toContain("最終入館 16:30");
+
+    const kimonoMarkup = renderFeatures("former-kubota-family-residence", "2026-10-01");
+    expect(kimonoMarkup).toContain("所選日期有提供");
+    expect(kimonoMarkup).toContain("着物の返却は16:30まで");
+  });
+
+  it("does not present a feature schedule on an unlisted availability date", () => {
+    const markup = renderFeatures("former-kubota-family-residence", "2026-10-02");
+    expect(markup).toContain("所選日期未提供");
+    expect(markup).not.toContain("本日提供時間");
+  });
+
+  it("shows exact lodging availability without inferring missing dates", () => {
+    expect(renderFeatures("casa-inn-iseya", "2026-10-09")).toContain("所選日期有提供");
+    expect(renderFeatures("hagi-honjin", "2026-10-09")).toContain("官方活動資料未列出此方案的指定住宿日");
+  });
+
+  it("renders the support-store common benefit from static feature data", () => {
+    const markup = renderFeatures("restaurant-matsuoka", "2026-10-01");
+    expect(markup).toContain("コラボ協力店舗 共通購入特典");
+    expect(markup).toContain("会計2,000円（税込）ごとに");
+  });
+});

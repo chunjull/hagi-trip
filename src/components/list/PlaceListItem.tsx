@@ -1,6 +1,8 @@
 import { formatDailySchedule } from "@/components/place/place-display";
+import PlaceFeatureList from "@/components/place/PlaceFeatureList";
+import SupportStoreBadge from "@/components/place/SupportStoreBadge";
 import type { PlaceDayInfo } from "@/domain/schedule/get-place-day-info";
-import type { Place, PlaceCategory } from "@/types";
+import type { IsoDate, Place, PlaceCategory } from "@/types";
 
 const CATEGORY_LABELS = {
   transport: "交通",
@@ -14,11 +16,12 @@ const CATEGORY_LABELS = {
 } satisfies Record<PlaceCategory, string>;
 
 interface PlaceListItemProps {
+  date: IsoDate;
   info: PlaceDayInfo;
   place: Place;
 }
 
-const PlaceListItem = ({ info, place }: PlaceListItemProps) => (
+const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
   <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
@@ -26,6 +29,11 @@ const PlaceListItem = ({ info, place }: PlaceListItemProps) => (
         <h3 className="mt-1 font-semibold leading-6 text-slate-950" lang="ja">
           {place.name}
         </h3>
+        {place.isCollabSupportStore ? (
+          <div className="mt-2">
+            <SupportStoreBadge />
+          </div>
+        ) : null}
       </div>
 
       {info.kind === "OPEN_TODAY" ? (
@@ -78,6 +86,17 @@ const PlaceListItem = ({ info, place }: PlaceListItemProps) => (
             <li key={notice}>{notice}</li>
           ))}
         </ul>
+      </details>
+    ) : null}
+
+    {place.features && place.features.length > 0 ? (
+      <details className="mt-4 rounded-xl border border-slate-200 px-3 py-2" open={place.category === "hotel"}>
+        <summary className="min-h-9 cursor-pointer py-1 text-sm font-semibold text-slate-900">
+          聯名內容與指定日期資訊（{place.features.length}）
+        </summary>
+        <div className="mt-3">
+          <PlaceFeatureList date={date} features={place.features} />
+        </div>
       </details>
     ) : null}
   </article>

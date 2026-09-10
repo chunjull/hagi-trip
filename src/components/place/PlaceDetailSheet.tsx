@@ -2,9 +2,13 @@
 
 import { useEffect, useRef } from "react";
 
+import ScheduledEventCard from "@/components/event/ScheduledEventCard";
 import BusinessHours from "@/components/place/BusinessHours";
+import PlaceFeatureList from "@/components/place/PlaceFeatureList";
 import { buildGoogleMapsUrl } from "@/components/place/place-display";
 import PlaceStatusBadge from "@/components/place/PlaceStatusBadge";
+import SupportStoreBadge from "@/components/place/SupportStoreBadge";
+import { getScheduledEventsRelatedToPlace } from "@/domain/event/scheduled-event";
 import { getScheduleForDate } from "@/domain/schedule/get-schedule-for-date";
 import type { BusinessSchedule, DailySchedule, IsoDate, Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
 
@@ -62,6 +66,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
 
   const mapUrl = place ? buildGoogleMapsUrl(place.mapQuery) : null;
   const placeSchedule = place && now && !businessInfoSuppressed ? getScheduleSafely(place, now.date) : undefined;
+  const relatedEvents = place ? getScheduledEventsRelatedToPlace(place.id) : [];
 
   return (
     <dialog
@@ -84,6 +89,11 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
               <h2 className="mt-1 text-xl font-semibold leading-tight" id="place-detail-title" lang="ja">
                 {place.name}
               </h2>
+              {place.isCollabSupportStore ? (
+                <div className="mt-2">
+                  <SupportStoreBadge />
+                </div>
+              ) : null}
             </div>
             <button
               aria-label={`關閉 ${place.name} 詳細資訊`}
@@ -135,39 +145,40 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
               ) : null}
             </div>
 
+            {relatedEvents.length > 0 ? (
+              <section aria-labelledby="place-events-title" className="mt-7">
+                <h3 className="text-base font-semibold" id="place-events-title">
+                  指定日期活動
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-slate-600">列車運行資訊與一般營業狀態分開判斷。</p>
+                {now ? (
+                  <div className="mt-3 space-y-3">
+                    {relatedEvents.map((event) => (
+                      <ScheduledEventCard date={now.date} event={event} key={event.id} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">
+                    無法取得日本當地日期，暫時不能判斷本日是否運行。
+                  </p>
+                )}
+              </section>
+            ) : null}
+
             {place.features && place.features.length > 0 ? (
               <section aria-labelledby="place-features-title" className="mt-7">
                 <h3 className="text-base font-semibold" id="place-features-title">
                   聯名內容
                 </h3>
-                <ul className="mt-3 space-y-3">
-                  {place.features.map((feature) => {
-                    const featureSchedule = feature.schedule && now && !businessInfoSuppressed ? getScheduleSafely(feature, now.date) : undefined;
-
-                    return (
-                      <li className="rounded-2xl border border-slate-200 p-4" key={feature.id}>
-                        <h4 className="font-semibold leading-6" lang="ja">
-                          {feature.title}
-                        </h4>
-                        {feature.description ? (
-                          <p className="mt-2 text-sm leading-6 text-slate-700">{feature.description}</p>
-                        ) : null}
-                        {!businessInfoSuppressed && feature.schedule && now ? (
-                          <dl className="mt-3">
-                            <BusinessHours label="本日提供時間" schedule={featureSchedule} />
-                          </dl>
-                        ) : null}
-                        {feature.notices && feature.notices.length > 0 ? (
-                          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-600">
-                            {feature.notices.map((notice) => (
-                              <li key={notice}>{notice}</li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-                </ul>
+                {now ? (
+                  <div className="mt-3">
+                    <PlaceFeatureList businessInfoSuppressed={businessInfoSuppressed} date={now.date} features={place.features} />
+                  </div>
+                ) : (
+                  <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">
+                    無法取得日本當地日期，暫時不能判斷聯名內容狀態。
+                  </p>
+                )}
               </section>
             ) : null}
 
@@ -183,6 +194,26 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 </ul>
               </section>
             ) : null}
+
+            <section aria-labelledby="place-sources-title" className="mt-7">
+              <h3 className="text-sm font-semibold" id="place-sources-title">
+                資料來源
+              </h3>
+              <ul className="mt-2 space-y-2 text-sm">
+                {place.sources.map((source) => (
+                  <li key={`${source.label}-${source.url}`}>
+                    <a
+                      className="inline-flex min-h-11 items-center text-sky-800 underline decoration-sky-300 underline-offset-4 hover:text-sky-950 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+                      href={source.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {source.label}<span className="sr-only">（新分頁）</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
             <div className="mt-7 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
               {mapUrl ? (

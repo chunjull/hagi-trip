@@ -23,6 +23,12 @@ export const SITE_CONFIG = {
     disclaimer: "本網站依活動官方網站刊載資訊整理。臨時休業、不定休及最新營業狀況，仍請以各設施官方公告為準。",
   },
 
+  project: {
+    repositoryUrl: "https://github.com/chunjull/hagi-trip",
+    contactLabel: "GitHub Issues",
+    contactUrl: "https://github.com/chunjull/hagi-trip/issues",
+  },
+
   mode: {
     type: "live",
   } satisfies SiteMode,

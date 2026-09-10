@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { SCHEDULED_EVENTS } from "@/data/scheduled-events";
 import type { ScheduledEvent } from "@/types";
-import { getScheduledEventsForDate, getScheduledEventsForPlace, isScheduledEventServiceDate } from "./scheduled-event";
+import {
+  getScheduledEventsForDate,
+  getScheduledEventsForPlace,
+  getScheduledEventsRelatedToPlace,
+  isScheduledEventServiceDate,
+} from "./scheduled-event";
 
 const TRAIN_EVENT = SCHEDULED_EVENTS[0];
 
@@ -46,5 +51,13 @@ describe("getScheduledEventsForPlace", () => {
   it("returns an empty list for an unrelated place or non-service date", () => {
     expect(getScheduledEventsForPlace("hagi-meirin-gakusha", "2026-10-03")).toEqual([]);
     expect(getScheduledEventsForPlace("jr-hagi", "2026-10-05")).toEqual([]);
+  });
+});
+
+describe("getScheduledEventsRelatedToPlace", () => {
+  it("returns related definitions without requiring a service date", () => {
+    expect(getScheduledEventsRelatedToPlace("jr-hagi")).toEqual([TRAIN_EVENT]);
+    expect(getScheduledEventsRelatedToPlace("jr-higashi-hagi")).toEqual([TRAIN_EVENT]);
+    expect(getScheduledEventsRelatedToPlace("hagi-meirin-gakusha")).toEqual([]);
   });
 });

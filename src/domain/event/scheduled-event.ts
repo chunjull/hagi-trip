@@ -11,6 +11,10 @@ export const isScheduledEventServiceDate = (event: ScheduledEvent, date: IsoDate
 export const getScheduledEventsForDate = (date: IsoDate): ScheduledEvent[] =>
   SCHEDULED_EVENTS.filter((event) => isScheduledEventServiceDate(event, date));
 
+/** Returns event definitions related to a place, including non-service dates. */
+export const getScheduledEventsRelatedToPlace = (placeId: string): ScheduledEvent[] =>
+  SCHEDULED_EVENTS.filter((event) => event.relatedPlaceIds.includes(placeId));
+
 /** Returns explicitly running events related to a place on a date. */
 export const getScheduledEventsForPlace = (placeId: string, date: IsoDate): ScheduledEvent[] =>
   getScheduledEventsForDate(date).filter((event) => event.relatedPlaceIds.includes(placeId));
