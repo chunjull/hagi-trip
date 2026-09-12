@@ -61,12 +61,12 @@ export const PLACES: Place[] = [
     category: "transport",
     address: "山口県萩市大字椿字濁渕3611番地",
     coordinates: {
-      lat: 34.3938756,
-      lng: 131.3984967,
+      lat: 34.3938712,
+      lng: 131.4010716,
     },
     mapQuery: "JR萩駅 山口県萩市",
     statusMode: "none",
-    description: "「〇〇のはなし」銀魂コラボの対象駅。駅自体には本コラボ用の營業時間が明示されていないため、marker 不套用營業狀態。",
+    description: "「〇〇のはなし」銀魂コラボの対象駅。駅自体には本コラボ用の營業時間が明示されていないため。",
     features: [
       {
         id: "marumaru-train-collab",
@@ -94,8 +94,8 @@ export const PLACES: Place[] = [
     category: "transport",
     address: "山口県萩市大字椿東2997番地",
     coordinates: {
-      lat: 34.4170229,
-      lng: 131.4077909,
+      lat: 34.4170185,
+      lng: 131.4103658,
     },
     mapQuery: "JR東萩駅 山口県萩市",
     statusMode: "businessHours",
@@ -105,7 +105,7 @@ export const PLACES: Place[] = [
       "2026-12-30": [slot("10:00", "16:00")],
       "2026-12-31": [slot("10:00", "16:00")],
     }),
-    description: "スタンプラリーポイント兼「〇〇のはなし」コラボ展示地点。marker 狀態以東萩駅観光案内所的營業時間為準。",
+    description: "スタンプラリーポイント兼「〇〇のはなし」コラボ展示地点。",
     features: [
       {
         id: "stamp-rally",
@@ -137,8 +137,8 @@ export const PLACES: Place[] = [
     category: "airport",
     address: "島根県益田市内田町イ597",
     coordinates: {
-      lat: 34.6781806,
-      lng: 131.7941703,
+      lat: 34.6781762,
+      lng: 131.7967452,
     },
     mapQuery: "萩・石見空港 島根県益田市内田町イ597",
     statusMode: "businessHours",
@@ -165,18 +165,26 @@ export const PLACES: Place[] = [
   {
     id: "hagi-meirin-gakusha",
     name: "萩・明倫学舎",
-    category: "mixed",
-    address: "山口県萩市江向602",
+    category: "attraction",
+    address: "山口県萩市江向602番地（萩市役所前）",
     coordinates: {
-      lat: 34.409223,
-      lng: 131.3972106,
+      lat: 34.4092186,
+      lng: 131.3997855,
     },
     mapQuery: "萩・明倫学舎 山口県萩市江向602",
     statusMode: "businessHours",
     statusBasisLabel: "萩・明倫学舎（施設全体）",
     schedule: EVERY_DAY_0900_1700,
-    description: "同一地理設施內整合萩観光案内所、有備館、萩暦、Birthday Event 等合作內容；marker 以萩・明倫学舎整體設施 9:00～17:00 為準，各合作內容的時間在 Detail 分開呈現。",
+    description:
+      "全国屈指の規模を誇った萩藩校明倫館の跡地に建つ旧明倫小学校校舎を、萩の観光拠点としてリノベーションした施設。国の登録有形文化財である校舎内に、レストラン、おみやげショップ、幕末ミュージアム、世界遺産ビジターセンターなどがある。marker は施設全体の9:00～17:00を基準とし、各コラボ内容の時間はDetailで個別に表示。",
     features: [
+      {
+        id: "goods-meirin-gakusha",
+        title: "コラボグッズ販売",
+        kind: "sales",
+        schedule: allDays([slot("09:00", "16:30")]),
+        notices: ["支払い方法：現金／クレジットカード／電子マネー／QRコード決済。", "12/31は開館時間が10:00～16:00に短縮される可能性があります。最新情報は施設公式サイトで確認してください。"],
+      },
       {
         id: "hagi-tourist-info",
         title: "萩観光案内所｜スタンプラリー用紙販売",
@@ -270,10 +278,11 @@ export const PLACES: Place[] = [
     sources: [
       { label: "銀魂暦 公式", url: EVENT_SOURCE },
       {
-        label: "萩市観光協会｜萩・明倫学舎",
-        url: "https://www.hagishi.com/search/list.php?c0=1&c1=4",
+        label: "萩・明倫学舎 公式",
+        url: "https://hagimeirin.jp/",
       },
     ],
+    notices: ["休館日は2月の第1火曜日およびその翌日。", "12/31は開館時間が10:00～16:00に短縮される可能性があります。最新情報は施設公式サイトで確認してください。"],
   },
 
   {
@@ -282,8 +291,8 @@ export const PLACES: Place[] = [
     category: "attraction",
     address: "山口県萩市呉服町1-31-5",
     coordinates: {
-      lat: 34.4131752,
-      lng: 131.391225,
+      lat: 34.4131708,
+      lng: 131.3937999,
     },
     mapQuery: "旧久保田家住宅 山口県萩市呉服町1-31-5",
     statusMode: "businessHours",
@@ -296,7 +305,7 @@ export const PLACES: Place[] = [
       "2026-10-31": [slot("10:00", "14:00")],
       "2026-11-01": [slot("10:00", "14:00")],
     }),
-    description: "着物ウィーク in 萩の期間中、指定日のみ着物レンタル・着付けを実施。marker は体験を開始できる10:00～14:00で判定。",
+    description: "着物ウィーク in 萩の期間中、指定日のみ着物レンタル・着付けを実施。",
     features: [
       {
         id: "limited-date-kimono-experience",
@@ -305,7 +314,7 @@ export const PLACES: Place[] = [
         description: "着物レンタル（着付け含む）3,636円、着物持込みの着付けのみ1,818円（いずれも税別）。",
         availabilityDates: ["2026-10-01", "2026-10-05", "2026-10-11", "2026-10-21", "2026-10-31", "2026-11-01"],
         schedule: allDays([slot("10:00", "14:00")]),
-        notices: ["当日会場受付・予約不可、先着20名。", "着物の返却は16:30まで。返却時刻は marker の利用可能時間を延長しない。", "ヘアセットなし。", "共通特典のステッカーはなくなり次第終了。"],
+        notices: ["当日会場受付・予約不可、先着20名。", "着物の返却は16:30まで。", "ヘアセットなし。", "共通特典のステッカーはなくなり次第終了。"],
       },
     ],
     sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
@@ -314,11 +323,11 @@ export const PLACES: Place[] = [
   {
     id: "hagi-fukuya",
     name: "萩ふくや",
-    category: "shop",
+    category: "attraction",
     address: "山口県萩市下五間町3",
     coordinates: {
-      lat: 34.4137564,
-      lng: 131.4002131,
+      lat: 34.413752,
+      lng: 131.402788,
     },
     mapQuery: "萩ふくや 山口県萩市下五間町3",
     statusMode: "businessHours",
@@ -350,11 +359,11 @@ export const PLACES: Place[] = [
   {
     id: "kimono-style-cafe",
     name: "Kimono Style Café",
-    category: "mixed",
+    category: "attraction",
     address: "山口県萩市呉服町2-39",
     coordinates: {
-      lat: 34.4137564,
-      lng: 131.4002131,
+      lat: 34.4122519,
+      lng: 131.3950386,
     },
     mapQuery: "Kimono Style Café 山口県萩市呉服町2-39",
     statusMode: "businessHours",
@@ -387,11 +396,11 @@ export const PLACES: Place[] = [
   {
     id: "risa-risa",
     name: "RISA RISA ～魔法の技術者～",
-    category: "shop",
+    category: "attraction",
     address: "山口県萩市椿東2771-13",
     coordinates: {
-      lat: 34.4159702,
-      lng: 131.4115724,
+      lat: 34.4159658,
+      lng: 131.4141473,
     },
     mapQuery: "RISA RISA 魔法の技術者 山口県萩市椿東2771-13",
     statusMode: "businessHours",
@@ -430,20 +439,17 @@ export const PLACES: Place[] = [
       },
     ],
     notices: ["2026年の祝日である10/12・11/23は月曜だが営業扱い。"],
-    sources: [
-      { label: "銀魂暦 公式", url: EVENT_SOURCE },
-      { label: "内閣府｜2026年の国民の祝日", url: JAPAN_HOLIDAY_SOURCE },
-    ],
+    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
   {
     id: "shoin-jinja",
     name: "松陰神社",
-    category: "shrine",
+    category: "attraction",
     address: "山口県萩市椿東1537",
     coordinates: {
-      lat: 34.4120868,
-      lng: 131.4155775,
+      lat: 34.4120824,
+      lng: 131.4181524,
     },
     mapQuery: "松陰神社 山口県萩市椿東1537",
     statusMode: "businessHours",
@@ -489,10 +495,10 @@ export const PLACES: Place[] = [
     id: "hagi-museum",
     name: "萩博物館",
     category: "attraction",
-    address: "山口県萩市堀内355",
+    address: "山口県萩市大字堀内355番地",
     coordinates: {
-      lat: 34.4134454,
-      lng: 131.3879629,
+      lat: 34.413441,
+      lng: 131.3905378,
     },
     mapQuery: "萩博物館 山口県萩市堀内355",
     statusMode: "businessHours",
@@ -500,9 +506,33 @@ export const PLACES: Place[] = [
       "2026-12-30": null,
       "2026-12-31": null,
     }),
-    description: "スタンプラリーポイント。marker の截止時間は最終入館 16:30。",
+    description: "萩の自然・歴史・文化を総合的に紹介する学びの拠点。明治維新の志士ゆかりの資料や城下町の成り立ちを深く理解し、萩の魅力を体感できる博物館。スタンプラリーポイントでもある。",
+    features: [
+      {
+        id: "stamp-rally",
+        title: "スタンプラリーポイント",
+        kind: "stampRally",
+      },
+      {
+        id: "goods-hagi-museum",
+        title: "コラボグッズ販売",
+        kind: "sales",
+        activePeriod: {
+          start: "2026-10-08",
+          end: "2026-12-31",
+        },
+        schedule: withOverrides(allDays([slot("09:00", "17:00")]), {
+          "2026-12-30": null,
+          "2026-12-31": null,
+        }),
+        notices: ["支払い方法：現金／クレジットカード／電子マネー／QRコード決済。"],
+      },
+    ],
     notices: ["12/30・12/31 は休館。該兩日的 stamp 設置位置移至萩観光案内所（10:00～16:00）。"],
-    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
+    sources: [
+      { label: "銀魂暦 公式", url: EVENT_SOURCE },
+      { label: "萩博物館 公式", url: "https://hagimuseum.jp/" },
+    ],
   },
 
   {
@@ -511,24 +541,31 @@ export const PLACES: Place[] = [
     category: "attraction",
     address: "山口県萩市呉服町2丁目37",
     coordinates: {
-      lat: 34.4122947,
-      lng: 131.3921496,
+      lat: 34.4122903,
+      lng: 131.3947245,
     },
     mapQuery: "木戸孝允旧宅 山口県萩市呉服町2丁目37",
     statusMode: "businessHours",
     schedule: EVERY_DAY_0900_1700,
     description: "スタンプラリーポイント。",
+    features: [
+      {
+        id: "stamp-rally",
+        title: "スタンプラリーポイント",
+        kind: "stampRally",
+      },
+    ],
     sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
   {
     id: "enseiji",
     name: "金毘羅社 円政寺",
-    category: "shrine",
+    category: "attraction",
     address: "山口県萩市南古萩町6",
     coordinates: {
-      lat: 34.4113756,
-      lng: 131.3916702,
+      lat: 34.4113712,
+      lng: 131.3942451,
     },
     mapQuery: "金毘羅社 円政寺 山口県萩市南古萩町6",
     statusMode: "businessHours",
@@ -557,11 +594,11 @@ export const PLACES: Place[] = [
   {
     id: "kasuga-jinja",
     name: "春日神社",
-    category: "shrine",
+    category: "attraction",
     address: "山口県萩市堀内285",
     coordinates: {
-      lat: 34.4109249,
-      lng: 131.3868772,
+      lat: 34.4109205,
+      lng: 131.3894521,
     },
     mapQuery: "春日神社 山口県萩市堀内285",
     statusMode: "businessHours",
@@ -587,8 +624,8 @@ export const PLACES: Place[] = [
     category: "attraction",
     address: "山口県萩市今魚店町47番地",
     coordinates: {
-      lat: 34.4168076,
-      lng: 131.3934059,
+      lat: 34.4168032,
+      lng: 131.3959808,
     },
     mapQuery: "熊谷家住宅 熊谷美術館 山口県萩市今魚店町47",
     statusMode: "businessHours",
@@ -620,10 +657,7 @@ export const PLACES: Place[] = [
       "水・木曜日休館。ただし祝日は開館。イベント期間中、該当曜日に重なる2026年の国民の祝日はありません。",
       "入館料は大人1,000円、18歳以下無料（年齢確認書類が必要）。企画展会期中は特別料金。",
     ],
-    sources: [
-      { label: "銀魂暦 公式", url: EVENT_SOURCE },
-      { label: "内閣府｜2026年の国民の祝日", url: JAPAN_HOLIDAY_SOURCE },
-    ],
+    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
   {
@@ -632,8 +666,8 @@ export const PLACES: Place[] = [
     category: "attraction",
     address: "山口県萩市呉服町1-1",
     coordinates: {
-      lat: 34.4128937,
-      lng: 131.3911231,
+      lat: 34.4128893,
+      lng: 131.393698,
     },
     mapQuery: "菊屋家住宅 山口県萩市呉服町1-1",
     statusMode: "businessHours",
@@ -663,8 +697,8 @@ export const PLACES: Place[] = [
     category: "hotel",
     address: "山口県萩市呉服町2丁目34",
     coordinates: {
-      lat: 34.4126891,
-      lng: 131.3927946,
+      lat: 34.4126869,
+      lng: 131.3940821,
     },
     mapQuery: "CASA inn ISEYA カーサ・イン・イセヤ",
     statusMode: "none",
@@ -722,8 +756,8 @@ export const PLACES: Place[] = [
     category: "hotel",
     address: "山口県萩市椿東385-8",
     coordinates: {
-      lat: 34.4151617,
-      lng: 131.4163504,
+      lat: 34.4151573,
+      lng: 131.4189253,
     },
     mapQuery: "源泉の宿 萩本陣 山口県萩市椿東385-8",
     statusMode: "none",
@@ -743,8 +777,8 @@ export const PLACES: Place[] = [
     category: "hotel",
     address: "山口県萩市堀内210",
     coordinates: {
-      lat: 34.4137563,
-      lng: 131.3833067,
+      lat: 34.4137519,
+      lng: 131.3858816,
     },
     mapQuery: "萩城三の丸 北門屋敷 山口県萩市堀内210",
     statusMode: "none",
@@ -764,8 +798,8 @@ export const PLACES: Place[] = [
     category: "hotel",
     address: "山口県萩市土原608-53",
     coordinates: {
-      lat: 34.4176135,
-      lng: 131.4033281,
+      lat: 34.4176091,
+      lng: 131.405903,
     },
     mapQuery: "萩の宿 常茂恵 山口県萩市土原608-53",
     statusMode: "none",
@@ -781,29 +815,87 @@ export const PLACES: Place[] = [
   },
 
   {
-    id: "daidaitei",
-    name: "うどん茶屋 橙々亭",
-    category: "restaurant",
-    address: "山口県萩市椿1258 道の駅 萩往還内",
+    id: "michi-no-eki-hagi-okan",
+    name: "道の駅 萩往還",
+    category: "attraction",
+    address: "山口県萩市大字椿字鹿背ヶ坂1258",
     coordinates: {
-      lat: 34.3693293,
-      lng: 131.4104825,
+      lat: 34.3693249,
+      lng: 131.4130574,
     },
-    mapQuery: "うどん茶屋 橙々亭 萩市椿1258",
+    mapQuery: "道の駅 萩往還 山口県萩市大字椿字鹿背ヶ坂1258",
     statusMode: "businessHours",
-    schedule: allDays([slot("11:00", "16:00", "15:45", "L.O.")]),
-    description: "聯名餐飲。marker 的有效截止時間使用 L.O. 15:45。",
+    statusBasisLabel: "道の駅 萩往還（施設全体）",
+    schedule: allDays([slot("09:00", "18:00")]),
+    description:
+      "萩と山口を結ぶ歴史街道の要衝に位置し、特産品や郷土グルメを楽しめる道の駅。明治維新ゆかりの史跡散策の拠点としても便利な施設。marker は道の駅全体の9:00～18:00を基準とし、レストランの時間はDetailで個別に表示。",
     features: [
       {
-        id: "collab-menu",
-        title: "ソバじゃない瓦ソバだ！桂とエリザベスの瓦ソバ",
+        id: "collab-goods-sales",
+        title: "コラボグッズ販売",
+        kind: "sales",
+        activePeriod: {
+          start: "2026-10-08",
+          end: "2026-12-31",
+        },
+        schedule: allDays([slot("09:00", "18:00")]),
+        notices: ["支払い方法：現金／PayPay／クレジット。"],
+      },
+      {
+        id: "daidaitei-collab-menu",
+        title: "橙々亭｜ソバじゃない瓦ソバだ！桂とエリザベスの瓦ソバ",
         kind: "food",
         description: "瓦に茶そば、錦糸卵、長萩和牛などをのせ、萩の醤油で味付けしたつゆで味わう瓦そば。桂とエリザベスのピック付き。1,500円（税別）。",
         schedule: allDays([slot("11:00", "16:00", "15:45", "L.O.")]),
-        notices: ["コラボメニュー1点につき、ミニキャラコースターをランダムで1枚配布（なくなり次第終了）。"],
+        notices: ["支払い方法は現金のみ。", "コラボメニュー1点につき、ミニキャラコースターをランダムで1枚配布（なくなり次第終了）。"],
       },
     ],
-    notices: ["臨時休業はInstagramで告知されるため、本網站の自動判定には反映しない。"],
+    notices: ["道の駅は無休。レストランの営業日は異なるため、詳細は施設公式サイトを確認してください。", "橙々亭の臨時休業はInstagramで告知されるため、本網站の自動判定には反映しない。"],
+    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
+  },
+
+  {
+    id: "michi-no-eki-hagi-sansan-sanmi",
+    name: "道の駅 萩・さんさん三見",
+    category: "attraction",
+    address: "山口県萩市三見1028-2",
+    coordinates: {
+      lat: 34.3889121,
+      lng: 131.3220752,
+    },
+    mapQuery: "道の駅 萩・さんさん三見 山口県萩市三見1028-2",
+    statusMode: "businessHours",
+    statusBasisLabel: "道の駅 萩・さんさん三見（施設全体）",
+    schedule: weekly({}, [slot("09:00", "17:00")], {
+      "2026-10-21": null,
+      "2026-11-18": null,
+      "2026-12-16": null,
+    }),
+    description: "萩市西側の玄関口に位置する道の駅。地元産の新鮮な野菜・果物、萩市や山口県の名産品がそろい、さんさんと太陽が降り注ぐオーシャンビューを楽しめる。",
+    features: [
+      {
+        id: "collab-goods-sales",
+        title: "コラボグッズ販売",
+        kind: "sales",
+        activePeriod: {
+          start: "2026-10-08",
+          end: "2026-12-31",
+        },
+        schedule: weekly({}, [slot("09:00", "17:00")], {
+          "2026-10-21": null,
+          "2026-11-18": null,
+          "2026-12-16": null,
+        }),
+        notices: [
+          "支払い方法：現金／クレジットカード／電子マネー／QRコード決済。",
+          "12/31は開館時間が9:00～12:00に短縮される可能性があり、食堂は休業します。最新情報は施設公式サイトで確認してください。",
+        ],
+      },
+    ],
+    notices: [
+      "毎月第3水曜日休業。活動期間中は10/21・11/18・12/16が該当します。",
+      "12/31は開館時間が9:00～12:00に短縮される可能性があり、食堂は休業します。最新情報は施設公式サイトで確認してください。",
+    ],
     sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
@@ -813,13 +905,13 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市浜崎町浜崎4区160",
     coordinates: {
-      lat: 34.4184395,
-      lng: 131.39105,
+      lat: 34.4215437,
+      lng: 131.4006837,
     },
     mapQuery: "甘味処 あんず 萩市浜崎町160",
     statusMode: "businessHours",
     schedule: allDays([slot("11:00", "17:00", "16:30", "L.O.")]),
-    description: "聯名餐飲。marker 的有效截止時間使用 L.O. 16:30。",
+    description: "聯名餐飲。",
     features: [
       {
         id: "collab-menu",
@@ -840,8 +932,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市土原522-1",
     coordinates: {
-      lat: 34.4098215,
-      lng: 131.4024875,
+      lat: 34.4098171,
+      lng: 131.4050624,
     },
     mapQuery: "酒ト定食 はっち 萩市土原522-1",
     statusMode: "businessHours",
@@ -851,7 +943,7 @@ export const PLACES: Place[] = [
       },
       [slot("11:00", "14:30", "14:00", "L.O.")],
     ),
-    description: "聯名餐飲。水曜休；marker 的有效截止時間使用 L.O. 14:00。",
+    description: "聯名餐飲。水曜休。",
     features: [
       {
         id: "collab-menu",
@@ -877,8 +969,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市浜崎町2-205",
     coordinates: {
-      lat: 34.4210851,
-      lng: 131.3980783,
+      lat: 34.4210807,
+      lng: 131.4006532,
     },
     mapQuery: "中村船具店 むらやカフェ 萩市浜崎町2-205",
     statusMode: "businessHours",
@@ -916,8 +1008,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市呉服町2丁目10",
     coordinates: {
-      lat: 34.4130556,
-      lng: 131.3919099,
+      lat: 34.4130512,
+      lng: 131.3944848,
     },
     mapQuery: "萩ぷりん亭 萩市呉服町2丁目10",
     statusMode: "businessHours",
@@ -943,8 +1035,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市椿陣ヶ原2757-1",
     coordinates: {
-      lat: 34.3959114,
-      lng: 131.4010076,
+      lat: 34.395907,
+      lng: 131.4035825,
     },
     mapQuery: "はちのたね 萩市椿陣ヶ原2757-1",
     statusMode: "businessHours",
@@ -955,7 +1047,7 @@ export const PLACES: Place[] = [
       },
       [slot("11:00", "16:00", "15:30", "L.O.")],
     ),
-    description: "聯名餐飲。火・水曜休；marker 的有效截止時間使用 L.O. 15:30。",
+    description: "聯名餐飲。火・水曜休。",
     features: [
       {
         id: "collab-menu",
@@ -982,13 +1074,13 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市南片河町62",
     coordinates: {
-      lat: 34.411261,
-      lng: 131.3895117,
+      lat: 34.4112566,
+      lng: 131.3920866,
     },
     mapQuery: "ホトリテイ 萩市南片河町62",
     statusMode: "businessHours",
     schedule: allDays([slot("11:00", "16:00", "15:30", "L.O.")]),
-    description: "聯名餐飲。marker 的有效截止時間使用 L.O. 15:30。",
+    description: "聯名餐飲。",
     features: [
       {
         id: "collab-menu",
@@ -1009,8 +1101,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市大字江崎1101",
     coordinates: {
-      lat: 34.639341,
-      lng: 131.6507053,
+      lat: 34.6393366,
+      lng: 131.6532802,
     },
     mapQuery: "レストランまつおか 山口県萩市江崎1101",
     statusMode: "businessHours",
@@ -1038,10 +1130,7 @@ export const PLACES: Place[] = [
       },
     ],
     notices: ["月曜休。月曜が祝日の場合は営業し、その週の水曜が休業。"],
-    sources: [
-      { label: "銀魂暦 公式", url: EVENT_SOURCE },
-      { label: "内閣府｜2026年の国民の祝日", url: JAPAN_HOLIDAY_SOURCE },
-    ],
+    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
   {
@@ -1050,8 +1139,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市川島294",
     coordinates: {
-      lat: 34.4031567,
-      lng: 131.4038931,
+      lat: 34.4031523,
+      lng: 131.406468,
     },
     mapQuery: "藍場川の家 山口県萩市川島294",
     statusMode: "businessHours",
@@ -1077,20 +1166,17 @@ export const PLACES: Place[] = [
       },
     ],
     notices: ["火・水曜休。祝日は営業するため、文化の日の11/3は営業扱い。"],
-    sources: [
-      { label: "銀魂暦 公式", url: EVENT_SOURCE },
-      { label: "内閣府｜2026年の国民の祝日", url: JAPAN_HOLIDAY_SOURCE },
-    ],
+    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
   },
 
   {
     id: "boulangerie-sumiyoshimaru",
     name: "ブーランジェリー住吉丸",
-    category: "shop",
+    category: "restaurant",
     address: "山口県萩市今古萩町18",
     coordinates: {
-      lat: 34.4161568,
-      lng: 131.4006163,
+      lat: 34.4161524,
+      lng: 131.4031912,
     },
     mapQuery: "ブーランジェリー住吉丸 山口県萩市今古萩町18",
     statusMode: "businessHours",
@@ -1124,8 +1210,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市土原3-350-6",
     coordinates: {
-      lat: 34.414222,
-      lng: 131.4032835,
+      lat: 34.4141472,
+      lng: 131.4058898,
     },
     mapQuery: "あんのけんそー カレー部",
     statusMode: "businessHours",
@@ -1164,8 +1250,8 @@ export const PLACES: Place[] = [
     category: "restaurant",
     address: "山口県萩市唐樋町80番",
     coordinates: {
-      lat: 34.4103186,
-      lng: 131.3996297,
+      lat: 34.4103142,
+      lng: 131.4022046,
     },
     mapQuery: "レストラン高大 山口県萩市唐樋町80",
     statusMode: "businessHours",

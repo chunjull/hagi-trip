@@ -1,11 +1,43 @@
-import type { CollaborationState, FeatureKind, IsoDate } from "@/types";
+import { OnigiriIcon } from "@phosphor-icons/react/dist/csr/Onigiri";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import {
+  AudioLines,
+  Bed,
+  BookHeart,
+  Cake,
+  Camera,
+  HandFist,
+  Heart,
+  HeartCrack,
+  Landmark,
+  Loader,
+  PersonStanding,
+  Plane,
+  Shirt,
+  ShoppingBag,
+  Stamp,
+  MapPin,
+  TrainFront,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
+
+import type { CollaborationState, FeatureKind, IsoDate, PlaceCategory } from "@/types";
+
+interface CollaborationStatePresentation {
+  className: string;
+  label: string;
+  symbol: LucideIcon;
+}
+
+type PlaceCategoryIcon = LucideIcon | PhosphorIcon;
 
 export const FEATURE_KIND_LABELS = {
   stampRally: "集章活動",
   sales: "商品販售",
   food: "聯名餐飲",
-  display: "展示",
-  event: "限定活動",
+  display: "立牌展示",
+  event: "銀時生日紀念",
   lodging: "住宿合作",
   transport: "交通合作",
   kimono: "和服體驗",
@@ -16,23 +48,47 @@ export const FEATURE_KIND_LABELS = {
   supportStoreBenefit: "協力店特典",
 } satisfies Record<FeatureKind, string>;
 
+export const FEATURE_KIND_ICONS: Partial<Record<FeatureKind, LucideIcon>> = {
+  stampRally: Stamp,
+  sales: ShoppingBag,
+  food: Utensils,
+  display: PersonStanding,
+  event: Cake,
+  lodging: Bed,
+  transport: TrainFront,
+  kimono: Shirt,
+  voice: AudioLines,
+  culturalProperty: Landmark,
+  photo: Camera,
+  goshuin: BookHeart,
+  supportStoreBenefit: HandFist,
+};
+
+export const PLACE_CATEGORY_ICONS: Partial<Record<PlaceCategory, PlaceCategoryIcon>> = {
+  transport: TrainFront,
+  airport: Plane,
+  restaurant: OnigiriIcon,
+  attraction: MapPin,
+  hotel: Bed,
+};
+
 export const COLLABORATION_STATE_PRESENTATION = {
   UPCOMING: {
     label: "聯名內容尚未開始",
-    symbol: "◇",
+    symbol: Loader,
     className: "border-sky-300 bg-sky-50 text-sky-950",
   },
   ACTIVE: {
     label: "聯名內容提供中",
-    symbol: "●",
+    symbol: Heart,
     className: "border-emerald-300 bg-emerald-50 text-emerald-950",
   },
   ENDED: {
     label: "聯名內容已結束",
-    symbol: "—",
+    symbol: HeartCrack,
     className: "border-slate-300 bg-slate-100 text-slate-700",
   },
-} satisfies Record<CollaborationState, { className: string; label: string; symbol: string }>;
+} satisfies Record<CollaborationState, CollaborationStatePresentation>;
 
 const toUtcDay = (date: IsoDate): number => Date.parse(`${date}T00:00:00.000Z`) / 86_400_000;
 
@@ -57,7 +113,5 @@ export const formatAvailabilityDateRanges = (dates: readonly IsoDate[]): string 
     }
   }
 
-  return ranges
-    .map(({ end, start }) => (start === end ? formatIsoDate(start) : `${formatIsoDate(start)}～${formatIsoDate(end)}`))
-    .join("、");
+  return ranges.map(({ end, start }) => (start === end ? formatIsoDate(start) : `${formatIsoDate(start)}～${formatIsoDate(end)}`)).join("、");
 };

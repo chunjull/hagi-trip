@@ -8,10 +8,7 @@ const CATEGORY_LABELS = {
   transport: "交通",
   airport: "機場",
   attraction: "景點",
-  mixed: "複合設施",
   restaurant: "餐飲",
-  shop: "商店",
-  shrine: "神社・寺院",
   hotel: "住宿",
 } satisfies Record<PlaceCategory, string>;
 
@@ -61,9 +58,7 @@ const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
     ) : info.kind === "CLOSED_TODAY" ? (
       <p className="mt-4 rounded-xl bg-slate-50 p-3 text-sm text-slate-700">官方排程顯示本日休息。</p>
     ) : (
-      <p className="mt-4 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-700">
-        此地點不以一般營業時間判斷可用狀態；請查看合作內容或設施官方公告。
-      </p>
+      <p className="mt-4 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-700">此地點不以一般營業時間判斷可用狀態；請查看合作內容或設施官方公告。</p>
     )}
 
     {info.isOverride ? (
@@ -91,9 +86,7 @@ const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
 
     {place.features && place.features.length > 0 ? (
       <details className="mt-4 rounded-xl border border-slate-200 px-3 py-2" open={place.category === "hotel"}>
-        <summary className="min-h-9 cursor-pointer py-1 text-sm font-semibold text-slate-900">
-          聯名內容與指定日期資訊（{place.features.length}）
-        </summary>
+        <summary className="min-h-9 cursor-pointer py-1 text-sm font-semibold text-slate-900">聯名內容與指定日期資訊（{place.features.length}）</summary>
         <div className="mt-3">
           <PlaceFeatureList date={date} features={place.features} />
         </div>

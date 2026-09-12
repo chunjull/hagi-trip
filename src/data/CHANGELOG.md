@@ -1,5 +1,38 @@
 # Data Changelog
 
+## 2026-09-13
+
+### Places and schema
+
+- 重新校正現有景點座標，並補上「道の駅 萩・さんさん三見」的 coordinates；目前 32 個 Place 均有可用座標。
+- 將 `PlaceCategory` 收斂為 `transport`、`airport`、`attraction`、`restaurant`、`hotel` 五類；和服體驗店與神社寺院統一歸入景點，ブーランジェリー住吉丸歸入餐飲。
+- 在木戸孝允旧宅補上明確的 stamp rally feature，讓 Detail 的聯名內容與其他集章地點保持一致。
+- 清理景點描述中的內部實作說明，保留對使用者有用的營業、休業與體驗資訊。
+
+### Map and detail presentation
+
+- 地圖 marker 改為「景點類別 icon＋營業狀態符號」的組合呈現，並同步更新可收合的狀態圖例；狀態仍以顏色、符號與文字共同表達。
+- 首頁調整為滿版地圖，將 JST 時間、11/28 提示、圖例與免責聲明改為地圖 overlay；目前地圖暫不顯示レストランまつおか、萩・石見空港與道の駅 萩・さんさん三見，但三者仍保留在 static data 與日期清單。
+- 景點 Detail 在聯名期間外仍顯示 feature 的一般提供時間，並保留「尚未開始／提供中／已結束」狀態；日期清單仍只顯示所選日期適用的時段。
+- Detail Sheet 改為固定高度的可捲動內容區，Google Maps 導航按鈕固定於底部，避免長內容把主要操作推出 viewport。
+
+## 2026-09-12
+
+### Sources
+
+- [銀魂暦｜萩市×アニメ「銀魂」コラボイベントサイト](https://luface.jp/business/event/collabo/hagi_gintama_goyomi/)
+- [萩・明倫学舎 公式](https://hagimeirin.jp/)
+- [萩博物館 公式](https://hagimuseum.jp/)
+- [道の駅 萩往還 公式](https://www.hagioukan.com/wp/)
+- [道の駅 萩・さんさん三見 公式](https://sansansanmi.com/)
+
+### Places and features
+
+- 補充萩・明倫学舎與萩博物館的コラボグッズ販売時間、付款方式、設施介紹與官方來源；萩博物館的販售期間自10/8起。
+- 將既有橙々亭 marker 合併為「道の駅 萩往還」，marker 改以設施整體9:00～18:00為基準，橙々亭保留為獨立餐飲 feature。
+- 新增「道の駅 萩・さんさん三見」marker 與コラボグッズ販売 feature；座標暫留 `null` 待人工核對。
+- 12/31可能縮短的資訊僅列為提示，不作為確定的 schedule override；さんさん三見的第3個星期三休業則明列為10/21、11/18、12/16。
+
 ## 2026-09-10
 
 ### Sources

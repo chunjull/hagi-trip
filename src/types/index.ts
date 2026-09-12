@@ -3,7 +3,7 @@ export type ClockTime = `${number}:${number}`;
 
 export type WeekdayKey = "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
 
-export type PlaceCategory = "transport" | "airport" | "attraction" | "mixed" | "restaurant" | "shop" | "shrine" | "hotel";
+export type PlaceCategory = "transport" | "airport" | "attraction" | "restaurant" | "hotel";
 
 export type PlaceStatusMode = "businessHours" | "none";
 

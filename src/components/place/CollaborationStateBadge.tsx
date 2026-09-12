@@ -6,12 +6,12 @@ interface CollaborationStateBadgeProps {
 }
 
 const CollaborationStateBadge = ({ state }: CollaborationStateBadgeProps) => {
-  const presentation = COLLABORATION_STATE_PRESENTATION[state];
+  const { className, label, symbol: Icon } = COLLABORATION_STATE_PRESENTATION[state];
 
   return (
-    <span className={`inline-flex min-h-7 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${presentation.className}`}>
-      <span aria-hidden="true">{presentation.symbol}</span>
-      {presentation.label}
+    <span className={`inline-flex min-h-7 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${className}`}>
+      <Icon aria-hidden="true" className="size-3.5 shrink-0" strokeWidth={2} />
+      {label}
     </span>
   );
 };

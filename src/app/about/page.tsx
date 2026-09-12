@@ -19,16 +19,13 @@ export default function AboutPage() {
     <main className="flex flex-1 flex-col bg-slate-50 px-4 py-6 sm:px-6">
       <div className="mx-auto w-full max-w-3xl">
         <header>
-          <p className="text-sm font-medium text-slate-600">銀魂暦 × 萩</p>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-950">關於本站</h1>
           <p className="mt-2 text-sm leading-6 text-slate-700">旅行途中與行前規劃都能快速查找聯名景點與官方活動資訊。</p>
         </header>
 
         <div className="mt-6 space-y-4">
           <Section title="網站用途">
-            <p>
-              本站整理「銀魂暦 × 萩」聯名城市活動資訊，協助使用者查看景點位置、當下可利用狀態，以及指定日期的營業時段與活動內容。
-            </p>
+            <p>本站整理「銀魂暦 × 萩」聯名城市活動資訊，協助使用者查看景點位置、當下可利用狀態，以及指定日期的營業時段與活動內容。</p>
             <p>本站只提供資訊，不會自動安排路線、估算交通時間或替使用者產生行程。</p>
           </Section>
 
@@ -43,12 +40,14 @@ export default function AboutPage() {
           <Section title="時間與日期">
             <p>
               所有即時狀態與日期判斷固定使用 <strong>JST（日本標準時間）</strong>，時區為
-              <code className="mx-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-900">{SITE_CONFIG.eventTimeZone}</code>。
-              即使使用者身處台灣或其他國家，也不會使用裝置所在地時間代替。
+              <code className="mx-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-900">{SITE_CONFIG.eventTimeZone}</code>。 即使使用者身處台灣或其他國家，也不會使用裝置所在地時間代替。
             </p>
             <p>
               活動期間為 <time dateTime={SITE_CONFIG.eventPeriod.start}>{SITE_CONFIG.eventPeriod.start}</time> 至
-              <time className="ml-1" dateTime={SITE_CONFIG.eventPeriod.end}>{SITE_CONFIG.eventPeriod.end}</time>。
+              <time className="ml-1" dateTime={SITE_CONFIG.eventPeriod.end}>
+                {SITE_CONFIG.eventPeriod.end}
+              </time>
+              。
             </p>
           </Section>
 
@@ -70,16 +69,12 @@ export default function AboutPage() {
           </Section>
 
           <Section title="重要聲明">
-            <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 font-medium text-amber-950">
-              {SITE_CONFIG.sourcePolicy.disclaimer}
-            </p>
+            <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 font-medium text-amber-950">{SITE_CONFIG.sourcePolicy.disclaimer}</p>
             <p>本站為個人製作的非官方網站，與作品權利方、活動主辦單位及各合作設施皆無隸屬或代理關係。</p>
           </Section>
 
           <Section title="開發背景與聯絡方式">
-            <p>
-              這個 side project 希望把分散在官方活動頁中的地點、營業時間與限定日期，整理成旅途中可用手機快速判斷的資訊，同時保留活動結束後的紀念查閱用途。
-            </p>
+            <p>這個 side project 希望把分散在官方活動頁中的地點、營業時間與限定日期，整理成旅途中可用手機快速判斷的資訊，同時保留活動結束後的紀念查閱用途。</p>
             <p>
               若發現資料錯誤或網站問題，請透過
               <a
@@ -88,7 +83,8 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {SITE_CONFIG.project.contactLabel}<span className="sr-only">（新分頁）</span>
+                {SITE_CONFIG.project.contactLabel}
+                <span className="sr-only">（新分頁）</span>
               </a>
               聯絡開發者；回報前仍請先以活動或設施官方公告確認最新狀況。
             </p>

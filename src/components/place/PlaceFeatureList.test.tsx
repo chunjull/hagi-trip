@@ -15,7 +15,7 @@ const getPlace = (id: string): Place => {
   return place;
 };
 
-const renderFeatures = (placeId: string, date: "2026-10-01" | "2026-10-02" | "2026-10-09"): string => {
+const renderFeatures = (placeId: string, date: "2026-09-13" | "2026-10-01" | "2026-10-02" | "2026-10-09"): string => {
   const place = getPlace(placeId);
   return renderToStaticMarkup(<PlaceFeatureList date={date} features={place.features ?? []} />);
 };
@@ -23,6 +23,19 @@ const renderFeatures = (placeId: string, date: "2026-10-01" | "2026-10-02" | "20
 describe("PlaceFeatureList", () => {
   it("renders the airport shop split schedule from feature data", () => {
     expect(renderFeatures("hagi-iwami-airport", "2026-10-01")).toContain("09:50–12:00／15:00–18:00");
+  });
+
+  it("can render a feature schedule on the home page before the collaboration starts", () => {
+    const place = getPlace("hagi-iwami-airport");
+    const defaultMarkup = renderFeatures("hagi-iwami-airport", "2026-09-13");
+    const homeMarkup = renderToStaticMarkup(
+      <PlaceFeatureList date="2026-09-13" features={place.features ?? []} scheduleMode="always" />,
+    );
+
+    expect(defaultMarkup).not.toContain("09:50–12:00／15:00–18:00");
+    expect(homeMarkup).toContain("聯名內容尚未開始");
+    expect(homeMarkup).toContain("<dt class=\"text-xs font-medium text-slate-500\">提供時間</dt>");
+    expect(homeMarkup).toContain("09:50–12:00／15:00–18:00");
   });
 
   it("renders the shrine final admission and kimono return details", () => {

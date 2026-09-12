@@ -6,7 +6,7 @@ import { getPlaceDayInfo } from "./get-place-day-info";
 const makePlace = (schedule?: BusinessSchedule): Place => ({
   id: "test-place",
   name: "Test Place",
-  category: "shop",
+  category: "transport",
   address: "Test Address",
   coordinates: null,
   mapQuery: "Test Place",

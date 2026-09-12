@@ -6,9 +6,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import MapErrorBoundary from "@/components/map/MapErrorBoundary";
 import type { MapPlaceItem, MapViewProps } from "@/components/map/MapView";
+import MarkerLegend from "@/components/map/MarkerLegend";
 import { formatEventDateTime, isValidCoordinates } from "@/components/place/place-display";
 import PlaceDetailSheet from "@/components/place/PlaceDetailSheet";
 import { PLACES } from "@/data/places";
+import { SITE_CONFIG } from "@/data/site-config";
 import { getEventLocalNow } from "@/domain/datetime/event-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
 import { getPlaceStatus } from "@/domain/schedule/get-place-status";
@@ -17,11 +19,15 @@ import type { Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
 const MapView = dynamic<MapViewProps>(() => import("./MapView"), {
   ssr: false,
   loading: () => (
-    <div className="flex min-h-80 items-center justify-center rounded-2xl bg-slate-100 text-sm text-slate-700" role="status">
+    <div className="flex h-full min-h-0 items-center justify-center bg-slate-100 text-sm text-slate-700" role="status">
       地圖載入中…
     </div>
   ),
 });
+
+const MAP_EXCLUDED_PLACE_IDS: ReadonlySet<Place["id"]> = new Set(["restaurant-matsuoka", "hagi-iwami-airport", "michi-no-eki-hagi-sansan-sanmi"]);
+
+const MAP_PLACES = PLACES.filter((place) => !MAP_EXCLUDED_PLACE_IDS.has(place.id));
 
 const getPlaceStatusSafely = (place: Place, now: ZonedDateTimeParts): PlaceStatus | null => {
   try {
@@ -101,7 +107,7 @@ const MapHomeClient = () => {
   const placeStatuses = useMemo(() => {
     const statuses = new Map<string, PlaceStatus | null>();
 
-    for (const place of PLACES) {
+    for (const place of MAP_PLACES) {
       statuses.set(place.id, now ? getPlaceStatusSafely(place, now) : null);
     }
 
@@ -112,7 +118,7 @@ const MapHomeClient = () => {
     const items: MapPlaceItem[] = [];
     const unmapped: Place[] = [];
 
-    for (const place of PLACES) {
+    for (const place of MAP_PLACES) {
       if (!isValidCoordinates(place.coordinates)) {
         unmapped.push(place);
         continue;
@@ -148,55 +154,62 @@ const MapHomeClient = () => {
   const selectedStatus = selectedPlace ? (placeStatuses.get(selectedPlace.id) ?? null) : null;
 
   return (
-    <section aria-label="銀魂暦合作景點地圖" className="space-y-4">
-      <div className="flex min-h-16 items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <div>
-          <p className="text-xs font-medium text-slate-500">活動所在地現在時間</p>
-          {now ? (
-            <time className="mt-1 block text-sm font-semibold text-slate-950" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
-              {formatEventDateTime(now)}
-            </time>
-          ) : timeError ? (
-            <p className="mt-1 text-sm font-semibold text-red-800" role="alert">
-              無法取得日本當地時間，暫不顯示營業狀態。
-            </p>
-          ) : (
-            <p className="mt-1 text-sm font-semibold text-slate-700" role="status">
-              正在取得日本當地時間…
-            </p>
-          )}
-        </div>
-        <span className="shrink-0 rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">JST</span>
-      </div>
-
-      {businessInfoSuppressed ? (
-        <p className="rounded-2xl border border-sky-300 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-950" role="status">
-          11 月 28 日不提供一般營業資訊。所有景點位置仍可查看，實際營業狀況請向各設施官方確認。
-        </p>
-      ) : null}
-
+    <section aria-label="銀魂暦合作景點地圖" className="absolute inset-0 overflow-hidden">
       <MapErrorBoundary
         fallback={
-          <div className="space-y-4 rounded-2xl border border-red-200 bg-red-50 p-4">
+          <div className="h-full space-y-4 overflow-y-auto bg-red-50 p-4 pt-48 sm:pt-36">
             <p className="text-sm font-semibold text-red-900" role="alert">
               地圖暫時無法顯示，仍可從下方清單查看景點詳細資訊。
             </p>
-            <PlaceButtonList heading="合作景點" places={PLACES} onSelectPlace={handleSelectPlace} />
+            <PlaceButtonList heading="合作景點" places={MAP_PLACES} onSelectPlace={handleSelectPlace} />
           </div>
         }
       >
         <MapView items={mapItems} onSelectPlace={handleSelectPlace} />
       </MapErrorBoundary>
 
-      <PlaceButtonList heading="尚未顯示於地圖的景點" places={unmappedPlaces} onSelectPlace={handleSelectPlace} />
+      <div className="pointer-events-none absolute inset-0 z-900 flex flex-col justify-between p-3 pb-7 sm:p-5 sm:pb-7">
+        <div className="space-y-2 pr-12">
+          <header className="pointer-events-auto w-full max-w-sm rounded-2xl border border-white/70 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium text-slate-500">活動所在地現在時間</p>
+                {now ? (
+                  <time className="mt-0.5 block text-sm font-semibold text-slate-950" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
+                    {formatEventDateTime(now)}
+                  </time>
+                ) : timeError ? (
+                  <p className="mt-0.5 text-sm font-semibold text-red-800" role="alert">
+                    無法取得日本當地時間，暫不顯示營業狀態。
+                  </p>
+                ) : (
+                  <p className="mt-0.5 text-sm font-semibold text-slate-700" role="status">
+                    正在取得日本當地時間…
+                  </p>
+                )}
+              </div>
+            </div>
+          </header>
 
-      <PlaceDetailSheet
-        businessInfoSuppressed={businessInfoSuppressed}
-        now={now}
-        place={selectedPlace}
-        status={selectedStatus}
-        onClosed={handleDetailClosed}
-      />
+          {businessInfoSuppressed ? (
+            <p className="pointer-events-auto max-w-sm rounded-2xl border border-sky-300 bg-sky-50/95 px-4 py-3 text-sm leading-6 text-sky-950 shadow-lg backdrop-blur" role="status">
+              11 月 28 日不提供一般營業資訊。地圖上的景點位置仍可查看，實際營業狀況請向各設施官方確認。
+            </p>
+          ) : null}
+        </div>
+
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="pointer-events-auto w-full max-w-md space-y-2">
+            <MarkerLegend />
+            {/* <PlaceButtonList heading="尚未顯示於地圖的景點" places={unmappedPlaces} onSelectPlace={handleSelectPlace} /> */}
+          </div>
+          <p className="pointer-events-auto max-w-sm rounded-xl border border-slate-200 bg-white/95 px-3 py-2 text-xs leading-5 text-slate-600 shadow-lg backdrop-blur">
+            {SITE_CONFIG.sourcePolicy.disclaimer}
+          </p>
+        </div>
+      </div>
+
+      <PlaceDetailSheet businessInfoSuppressed={businessInfoSuppressed} now={now} place={selectedPlace} status={selectedStatus} onClosed={handleDetailClosed} />
     </section>
   );
 };

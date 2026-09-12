@@ -70,8 +70,8 @@ describe("buildGoogleMapsUrl", () => {
 });
 
 describe("isValidCoordinates", () => {
-  it("accepts the coordinates of every current map place", () => {
-    expect(PLACES).toHaveLength(31);
+  it("accepts the coordinates of every current place", () => {
+    expect(PLACES).toHaveLength(32);
     expect(PLACES.every((place) => isValidCoordinates(place.coordinates))).toBe(true);
   });
 

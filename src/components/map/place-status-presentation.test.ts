@@ -15,15 +15,20 @@ const ALL_STATUSES: PlaceStatus[] = [
 ];
 
 describe("place status presentation", () => {
-  it("defines text, a symbol, and color classes for every status", () => {
+  it("defines text, status visuals, and color classes for every status", () => {
     expect(Object.keys(PLACE_STATUS_PRESENTATION)).toEqual(ALL_STATUSES);
 
     for (const status of ALL_STATUSES) {
       const presentation = getPlaceStatusPresentation(status);
 
       expect(presentation.label).not.toBe("");
-      expect(presentation.symbol).not.toBe("");
       expect(presentation.className).not.toBe("");
+
+      if (status === "OPEN") {
+        expect(presentation.symbol).toBe("");
+      } else {
+        expect(presentation.symbol).not.toBe("");
+      }
     }
   });
 
@@ -32,5 +37,13 @@ describe("place status presentation", () => {
 
     expect(presentation.label).toBe("狀態需現場／官方確認");
     expect(presentation.className).not.toMatch(/emerald|amber|orange/);
+  });
+
+  it("uses renderable icon components instead of icon-name strings", () => {
+    const iconStatuses: PlaceStatus[] = ["NOT_OPEN_YET", "OPEN_STATUS_UNCERTAIN", "CLOSED", "CLOSED_TODAY", "HIDDEN"];
+
+    for (const status of iconStatuses) {
+      expect(typeof getPlaceStatusPresentation(status).symbol).not.toBe("string");
+    }
   });
 });
