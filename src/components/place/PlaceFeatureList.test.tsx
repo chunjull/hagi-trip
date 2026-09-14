@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { PLACES } from "@/data/places";
-import type { Place } from "@/types";
+import type { Place, PlaceFeature } from "@/types";
 import PlaceFeatureList from "./PlaceFeatureList";
 
 const getPlace = (id: string): Place => {
@@ -52,9 +52,18 @@ describe("PlaceFeatureList", () => {
     expect(markup).not.toContain("本日提供時間");
   });
 
-  it("shows exact lodging availability without inferring missing dates", () => {
-    expect(renderFeatures("casa-inn-iseya", "2026-10-09")).toContain("所選日期有提供");
-    expect(renderFeatures("hagi-honjin", "2026-10-09")).toContain("官方活動資料未列出此方案的指定住宿日");
+  it("shows listed lodging dates and omits date information when unspecified", () => {
+    const listedFeature: PlaceFeature = { id: "test-lodging", title: "Test lodging", kind: "lodging", availabilityDates: ["2026-10-09"] };
+    expect(renderToStaticMarkup(<PlaceFeatureList date="2026-10-09" features={[listedFeature]} />)).toContain("所選日期有提供");
+    const unspecifiedMarkup = renderFeatures("hagi-honjin", "2026-10-09");
+    expect(unspecifiedMarkup).toContain("コラボ宿泊プラン");
+    expect(unspecifiedMarkup).not.toContain("官方活動資料未列出此方案的指定住宿日");
+    expect(unspecifiedMarkup).not.toContain("官方指定合作日");
+    expect(unspecifiedMarkup).not.toContain("所選日期有提供");
+    expect(unspecifiedMarkup).not.toContain("所選日期未提供");
+    const casaMarkup = renderFeatures("casa-inn-iseya", "2026-10-09");
+    expect(casaMarkup).not.toContain("官方指定合作日");
+    expect(casaMarkup).toContain("完売");
   });
 
   it("renders the support-store common benefit from static feature data", () => {

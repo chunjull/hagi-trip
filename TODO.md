@@ -1,6 +1,6 @@
 # 銀魂暦 × 萩 專案 TODO
 
-> 最後更新：2026-09-10  
+> 最後更新：2026-09-14
 > 需求與產品規則以 [`AGENTS.md`](./AGENTS.md) 為準。官方活動資料以[活動官方網站](https://luface.jp/business/event/collabo/hagi_gintama_goyomi/)為主要依據。
 
 ## 進度標記
@@ -42,7 +42,7 @@
 | M3 地圖首頁     | 已完成   | 手機可查看所有 marker、狀態與詳情          |
 | M4 日期清單     | 已完成   | 可查指定日期並正確處理 11/28               |
 | M5 完整活動資訊 | 已完成   | 列車、合作期間、住宿與協力店資訊可查       |
-| M6 上線驗收     | 尚未開始 | QA、static build 與部署完成                |
+| M6 上線驗收     | 進行中   | QA、static build 與部署完成                |
 
 ## M0 — 專案基礎
 
@@ -154,16 +154,32 @@
 ## M6 — QA、效能與發布
 
 - [ ] `P0 QA` 逐一核對所有 place、feature、日期、營業時段與官方來源。
-- [ ] `P0 QA` 測試 JST 與使用者裝置時區不同時的顯示及狀態。
-- [ ] `P0 QA` 測試 09:59／10:00、L.O.、分段空檔及午夜日期切換。
+- [-] `P0 QA` 測試 JST 與使用者裝置時區不同時的顯示及狀態；非 JST runtime 的 utility／domain 測試已通過，仍待瀏覽器裝置時區驗收。
+- [x] `P0 QA` 測試 09:59／10:00、L.O.、分段空檔及午夜日期切換；既有單元測試已通過。
 - [ ] `P0 QA` 以實際手機 viewport 測試 marker 點擊、Detail、Date Picker 與導航連結。
 - [ ] `P0 A11Y` 完成鍵盤、focus、accessible name、對比與非色彩狀態檢查。
-- [ ] `P0 QA` 驗證 missing schedule、coordinates 與錯誤 map URL 不會造成整頁崩潰。
-- [ ] `P0 QA` 執行並通過 unit tests、lint、TypeScript 與 production build。
+- [-] `P0 QA` 驗證 missing schedule、coordinates 與錯誤 map URL 不會造成整頁崩潰；缺失排程、無效座標與空白 map query 的單元測試已通過，仍待整頁錯誤資料驗收。
+- [-] `P0 QA` 執行並通過 unit tests、lint、TypeScript 與 production build；目前 1 個測試失敗，lint／TypeScript／webpack production build 通過，預設 Turbopack build 受執行環境限制。
 - [ ] `P0 RELEASE` 驗證 static export 產物可在目標環境運作。
 - [ ] `P0 RELEASE` 部署正式站並完成 smoke test。
 - [ ] `P1 RELEASE` 記錄 archive mode 切換步驟；暫不自行設定 `frozenDateTime`。
 - [ ] `P2 UI` 在不影響正確性與效能的前提下進行視覺 polish。
+
+### M6 稽核紀錄（2026-09-14）
+
+M6 尚未完成。下列結果來自本次實際執行與程式碼檢查；功能已實作不等於已完成手機、無障礙或正式環境驗收。
+
+| 檢查 | 結果與證據 |
+| --- | --- |
+| Unit tests | `npm test`：18 個測試檔中 17 個通過；141 個測試中 140 個通過、1 個失敗。`PlaceFeatureList.test.tsx` 的住宿測試預期萩本陣顯示「官方活動資料未列出此方案的指定住宿日」，目前 UI 未呈現該提示。 |
+| 時區與時間邊界 | `TZ=America/Los_Angeles npm test -- src/domain/datetime/event-time.test.ts src/domain/schedule/get-place-status.test.ts src/components/place/place-display.test.ts`：37 個測試全部通過，涵蓋 JST 格式、午夜前後日期、開店邊界、L.O. 與分段空檔；未執行瀏覽器時區切換測試。 |
+| Lint／TypeScript | `npm run lint`：0 errors、3 warnings（未使用的 `unmappedPlaces`、`JAPAN_HOLIDAY_SOURCE`，以及多餘的 `placeNumber` Hook dependency）；`npx tsc --noEmit` 通過。 |
+| Production build／static export | `npm run build` 在要求沙箱外重跑後仍因 `binding to a port: Operation not permitted` 失敗；`npm run build -- --webpack` 通過，並生成 `out/index.html`、`out/list.html`、`out/about.html` 與靜態資源。產物生成不代表目標環境已驗收。 |
+| 錯誤資料 | 單元測試涵蓋 missing schedule、無效 coordinates 與空白 map query；程式碼有狀態計算 catch、座標過濾與地圖 Error Boundary。`unmappedPlaces` 目前未渲染，仍需確認缺少座標時的替代介面。 |
+| 地圖完整性 | 32 個 Place 均有可用座標，但 `MapHomeClient.tsx` 的 `MAP_EXCLUDED_PLACE_IDS` 排除レストランまつおか、萩・石見空港及道の駅 萩・さんさん三見；此差異已記錄於 2026-09-13 data changelog，最終驗收前仍需確認是否符合「所有聯名景點」要求。 |
+| 11/28 活動資訊 | `NoBusinessInfoDateDialog` 接收 `events` 但未呈現；背景的 scheduled event 區域在 11/28 為 `inert`／`aria-hidden`。因此 M4 驗收中「不會隱藏 scheduled event 資料」需重新確認。 |
+| Archive mode | 已有 `SiteMode` 型別與 live config，但未找到 runtime 使用 `SITE_CONFIG.mode`／`frozenDateTime` 的程式碼，也沒有切換步驟文件；不可只改 config 就宣稱凍結時間已生效。 |
+| 待驗收 | 官方資料逐筆比對、實際手機 viewport 操作、完整鍵盤／focus／對比檢查、目標靜態主機路由與資源驗證、正式部署及 smoke test 均未在本次完成；repo 未提供正式站網址、部署設定或驗收紀錄，無法判定外部部署已完成。 |
 
 ## 待確認／阻塞事項
 

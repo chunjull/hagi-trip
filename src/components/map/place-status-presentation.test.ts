@@ -24,11 +24,7 @@ describe("place status presentation", () => {
       expect(presentation.label).not.toBe("");
       expect(presentation.className).not.toBe("");
 
-      if (status === "OPEN") {
-        expect(presentation.symbol).toBe("");
-      } else {
-        expect(presentation.symbol).not.toBe("");
-      }
+      expect(presentation.symbol).not.toBe("");
     }
   });
 
@@ -40,7 +36,7 @@ describe("place status presentation", () => {
   });
 
   it("uses renderable icon components instead of icon-name strings", () => {
-    const iconStatuses: PlaceStatus[] = ["NOT_OPEN_YET", "OPEN_STATUS_UNCERTAIN", "CLOSED", "CLOSED_TODAY", "HIDDEN"];
+    const iconStatuses: PlaceStatus[] = ["OPEN", "NOT_OPEN_YET", "OPEN_STATUS_UNCERTAIN", "CLOSED", "CLOSED_TODAY", "HIDDEN"];
 
     for (const status of iconStatuses) {
       expect(typeof getPlaceStatusPresentation(status).symbol).not.toBe("string");

@@ -1,5 +1,5 @@
 import { SITE_CONFIG } from "@/data/site-config";
-import { getEventLocalNow } from "@/domain/datetime/event-time";
+import { getSiteLocalNow } from "@/domain/datetime/site-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
 import type { IsoDate } from "@/types";
 
@@ -36,7 +36,7 @@ export const clampDateToEventPeriod = (date: IsoDate): IsoDate => {
 
 /** Uses the event-local date and keeps the initial selection inside the event period. */
 export const getDefaultListDate = (referenceTime: Date = new Date()): IsoDate =>
-  clampDateToEventPeriod(getEventLocalNow(referenceTime).date);
+  clampDateToEventPeriod(getSiteLocalNow(referenceTime).date);
 
 export const getInitialListDate = (queryDate: string | null | undefined, referenceTime: Date = new Date()): IsoDate => {
   const parsedQueryDate = parseIsoDate(queryDate);

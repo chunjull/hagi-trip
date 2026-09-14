@@ -10,9 +10,10 @@ import MarkerLegend from "@/components/map/MarkerLegend";
 import { formatEventDateTime, isValidCoordinates } from "@/components/place/place-display";
 import PlaceDetailSheet from "@/components/place/PlaceDetailSheet";
 import { PLACES } from "@/data/places";
-import { getEventLocalNow } from "@/domain/datetime/event-time";
+import { SITE_CONFIG } from "@/data/site-config";
+import { getSiteLocalNow } from "@/domain/datetime/site-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
-import { getPlaceStatus } from "@/domain/schedule/get-place-status";
+import { getPlaceStatusForDisplay } from "@/domain/schedule/get-place-status";
 import type { Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
 
 const MapView = dynamic<MapViewProps>(() => import("./MapView"), {
@@ -27,14 +28,6 @@ const MapView = dynamic<MapViewProps>(() => import("./MapView"), {
 const MAP_EXCLUDED_PLACE_IDS: ReadonlySet<Place["id"]> = new Set(["restaurant-matsuoka", "hagi-iwami-airport", "michi-no-eki-hagi-sansan-sanmi"]);
 
 const MAP_PLACES = PLACES.filter((place) => !MAP_EXCLUDED_PLACE_IDS.has(place.id));
-
-const getPlaceStatusSafely = (place: Place, now: ZonedDateTimeParts): PlaceStatus | null => {
-  try {
-    return getPlaceStatus(place, now);
-  } catch {
-    return null;
-  }
-};
 
 interface PlaceButtonListProps {
   heading: string;
@@ -79,7 +72,7 @@ const MapHomeClient = () => {
   useEffect(() => {
     const updateNow = () => {
       try {
-        setNow(getEventLocalNow());
+        setNow(getSiteLocalNow());
         setTimeError(false);
       } catch {
         setNow(null);
@@ -88,6 +81,9 @@ const MapHomeClient = () => {
     };
 
     updateNow();
+    if (SITE_CONFIG.mode.type === "archive") {
+      return;
+    }
     const timer = window.setInterval(updateNow, 60_000);
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -107,7 +103,7 @@ const MapHomeClient = () => {
     const statuses = new Map<string, PlaceStatus | null>();
 
     for (const place of MAP_PLACES) {
-      statuses.set(place.id, now ? getPlaceStatusSafely(place, now) : null);
+      statuses.set(place.id, now ? getPlaceStatusForDisplay(place, now) : null);
     }
 
     return statuses;
@@ -160,7 +156,7 @@ const MapHomeClient = () => {
             <p className="text-sm font-semibold text-red-900" role="alert">
               地圖暫時無法顯示，仍可從下方清單查看景點詳細資訊。
             </p>
-            <PlaceButtonList heading="合作景點" places={MAP_PLACES} onSelectPlace={handleSelectPlace} />
+              <PlaceButtonList heading="合作景點" places={MAP_PLACES} onSelectPlace={handleSelectPlace} />
           </div>
         }
       >
@@ -172,7 +168,7 @@ const MapHomeClient = () => {
           <header className="pointer-events-auto w-full max-w-sm rounded-lg border border-brand-line border-t-2 border-t-brand bg-paper/95 px-4 py-3 shadow-lg backdrop-blur">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold tracking-wide text-brand">活動所在地現在時間</p>
+                <p className="text-xs font-semibold tracking-wide text-brand">{SITE_CONFIG.mode.type === "archive" ? "紀念模式・日本時間" : "活動所在地現在時間"}</p>
                 {now ? (
                   <time className="mt-0.5 block text-sm font-semibold text-ink" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
                     {formatEventDateTime(now)}
@@ -195,11 +191,18 @@ const MapHomeClient = () => {
               11 月 28 日不提供一般營業資訊。地圖上的景點位置仍可查看，實際營業狀況請向各設施官方確認。
             </p>
           ) : null}
+
+          {unmappedPlaces.length > 0 ? (
+            <div className="pointer-events-auto max-h-[30dvh] max-w-sm overflow-y-auto">
+              <PlaceButtonList heading="尚未標示位置的景點" places={unmappedPlaces} onSelectPlace={handleSelectPlace} />
+            </div>
+          ) : null}
         </div>
 
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="pointer-events-auto w-full max-w-md space-y-2">
             <MarkerLegend />
+            <p className="rounded-md border border-rule bg-paper/95 px-3 py-2 text-xs leading-5 text-ink-soft">{SITE_CONFIG.sourcePolicy.disclaimer}</p>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ const PlaceMarker = ({ place, position, status, onSelect }: PlaceMarkerProps) =>
       iconAnchor: [PLACE_MARKER_ICON_CENTER, PLACE_MARKER_ICON_CENTER],
       iconSize: [PLACE_MARKER_ICON_SIZE, PLACE_MARKER_ICON_SIZE],
     });
-  }, [place.category, placeNumber, presentation.className, presentation.symbol, status]);
+  }, [place.category, presentation.className, presentation.symbol, status]);
 
   useEffect(() => {
     const markerElement = markerRef.current?.getElement();
@@ -63,6 +63,12 @@ const PlaceMarker = ({ place, position, status, onSelect }: PlaceMarkerProps) =>
       title={accessibleLabel}
       eventHandlers={{
         click: () => onSelect(place, markerRef.current?.getElement() ?? null),
+        keydown: ({ originalEvent }) => {
+          if (originalEvent.key === "Enter" || originalEvent.key === " ") {
+            originalEvent.preventDefault();
+            onSelect(place, markerRef.current?.getElement() ?? null);
+          }
+        },
       }}
     />
   );

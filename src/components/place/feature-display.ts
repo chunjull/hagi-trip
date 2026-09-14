@@ -37,7 +37,7 @@ export const FEATURE_KIND_LABELS = {
   sales: "商品販售",
   food: "聯名餐飲",
   display: "立牌展示",
-  event: "銀時生日紀念",
+  event: "指定活動",
   lodging: "住宿合作",
   transport: "交通合作",
   kimono: "和服體驗",

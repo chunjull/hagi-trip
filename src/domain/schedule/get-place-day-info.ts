@@ -18,7 +18,7 @@ export type PlaceDayInfo =
     };
 
 /** Returns date-only availability for the list page; it intentionally has no live closing-soon states. */
-export const getPlaceDayInfo = (place: Place, date: IsoDate): PlaceDayInfo => {
+const resolvePlaceDayInfo = (place: Place, date: IsoDate): PlaceDayInfo => {
   if (place.statusMode === "none" || !place.schedule) {
     return {
       kind: "BUSINESS_INFO_UNAVAILABLE",
@@ -61,4 +61,12 @@ export const getPlaceDayInfo = (place: Place, date: IsoDate): PlaceDayInfo => {
     schedule: dailySchedule,
     isOverride,
   };
+};
+
+export const getPlaceDayInfo = (place: Place, date: IsoDate): PlaceDayInfo => {
+  try {
+    return resolvePlaceDayInfo(place, date);
+  } catch {
+    return { kind: "BUSINESS_INFO_UNAVAILABLE", isOverride: false };
+  }
 };

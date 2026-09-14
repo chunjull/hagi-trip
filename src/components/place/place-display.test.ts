@@ -67,6 +67,17 @@ describe("buildGoogleMapsUrl", () => {
   it("returns null for an empty query", () => {
     expect(buildGoogleMapsUrl("   ")).toBeNull();
   });
+
+  it.each([undefined, null, 123, {}])("contains malformed query data %s", (query) => {
+    expect(buildGoogleMapsUrl(query)).toBeNull();
+  });
+
+  it("treats URL-like queries as search text instead of a navigation destination", () => {
+    const query = "javascript:alert(1)";
+    const url = new URL(buildGoogleMapsUrl(query)!);
+    expect(url.hostname).toBe("www.google.com");
+    expect(url.searchParams.get("query")).toBe(query);
+  });
 });
 
 describe("isValidCoordinates", () => {

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 
 import ScheduledEventCard from "@/components/event/ScheduledEventCard";
+import { trapDialogFocus } from "@/components/layout/dialog-focus";
 import BusinessHours from "@/components/place/BusinessHours";
 import PlaceFeatureList from "@/components/place/PlaceFeatureList";
 import { buildGoogleMapsUrl } from "@/components/place/place-display";
@@ -76,6 +77,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
       aria-modal="true"
       className="fixed inset-x-0 bottom-0 top-auto m-0 h-[85dvh] max-h-[85dvh] w-full max-w-none overflow-hidden rounded-t-xl border-t-2 border-t-brand bg-paper p-0 text-ink shadow-2xl backdrop:bg-slate-950/55 sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-full sm:w-[min(30rem,100vw)] sm:rounded-none"
       ref={dialogRef}
+      onKeyDown={trapDialogFocus}
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           event.currentTarget.close();

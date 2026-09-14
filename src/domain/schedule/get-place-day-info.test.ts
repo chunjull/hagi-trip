@@ -81,6 +81,12 @@ describe("getPlaceDayInfo", () => {
     });
   });
 
+  it("contains malformed schedules without breaking other places", () => {
+    const invalidSchedule = { weekly: null } as unknown as BusinessSchedule;
+    expect(getPlaceDayInfo(makePlace(invalidSchedule), "2026-10-05").kind).toBe("BUSINESS_INFO_UNAVAILABLE");
+    expect(getPlaceDayInfo(makePlace(REGULAR_SCHEDULE), "2026-10-19").kind).toBe("OPEN_TODAY");
+  });
+
   describe("feature availability", () => {
     const makeFeature = (overrides: Partial<PlaceFeature> = {}): PlaceFeature => ({
       id: "test-feature",

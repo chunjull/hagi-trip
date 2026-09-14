@@ -1,7 +1,6 @@
 import type { BusinessSchedule, ClockTime, DailySchedule, FixedTimeSlot, IsoDate, OpenEndedTimeSlot, Place, TimeSlot, WeekdayKey } from "@/types";
 
 const EVENT_SOURCE = "https://luface.jp/business/event/collabo/hagi_gintama_goyomi/";
-const JAPAN_HOLIDAY_SOURCE = "https://www8.cao.go.jp/chosei/shukujitsu/gaiyou.html";
 
 const allDays = (slots: TimeSlot[]): BusinessSchedule => ({
   weekly: {
@@ -184,6 +183,15 @@ export const PLACES: Place[] = [
         kind: "sales",
         schedule: allDays([slot("09:00", "16:30")]),
         notices: ["支払い方法：現金／クレジットカード／電子マネー／QRコード決済。", "12/31は開館時間が10:00～16:00に短縮される可能性があります。最新情報は施設公式サイトで確認してください。"],
+      },
+      {
+        id: "opening-mochimaki-event",
+        title: "開幕記念｜萩にゃん。＆エリザベスもちまき大会",
+        kind: "event",
+        activePeriod: { start: "2026-10-01", end: "2026-10-01" },
+        availabilityDates: ["2026-10-01"],
+        description: "10/1 開場13:45、開始14:00。免費參加，地點為本館1樓玄關附近。",
+        notices: ["雨天預定改至あそぼー舎，請依主辦單位當日公告確認。", "官方未列結束時間，本項活動不作為設施營業狀態的判斷基準。"],
       },
       {
         id: "hagi-tourist-info",
@@ -521,7 +529,7 @@ export const PLACES: Place[] = [
           start: "2026-10-08",
           end: "2026-12-31",
         },
-        schedule: withOverrides(allDays([slot("09:00", "17:00")]), {
+        schedule: withOverrides(allDays([slot("09:00", "17:00", "16:30", "最終入館")]), {
           "2026-12-30": null,
           "2026-12-31": null,
         }),
@@ -707,47 +715,13 @@ export const PLACES: Place[] = [
         id: "collab-lodging-plan",
         title: "コラボ宿泊プラン",
         kind: "lodging",
-        availabilityDates: [
-          "2026-10-09",
-          "2026-10-10",
-          "2026-10-11",
-          "2026-10-12",
-          "2026-10-13",
-          "2026-10-14",
-          "2026-10-18",
-          "2026-10-19",
-          "2026-10-23",
-          "2026-10-24",
-          "2026-10-25",
-          "2026-10-26",
-          "2026-10-30",
-          "2026-10-31",
-          "2026-11-01",
-          "2026-11-02",
-          "2026-11-03",
-          "2026-11-15",
-          "2026-11-16",
-          "2026-11-17",
-          "2026-11-18",
-          "2026-11-19",
-          "2026-12-18",
-          "2026-12-19",
-          "2026-12-20",
-          "2026-12-21",
-          "2026-12-22",
-          "2026-12-23",
-          "2026-12-24",
-          "2026-12-25",
-          "2026-12-26",
-          "2026-12-27",
-          "2026-12-28",
-          "2026-12-29",
-          "2026-12-30",
-          "2026-12-31",
-        ],
+        notices: ["施設公式サイトでは8/22に完売と案内されています。現在の指定宿泊日一覧は公開されていません。"],
       },
     ],
-    sources: [{ label: "銀魂暦 公式", url: EVENT_SOURCE }],
+    sources: [
+      { label: "銀魂暦 公式", url: EVENT_SOURCE },
+      { label: "CASA inn Iseya コラボ公式", url: "https://www.casa-inn-iseya.com/銀魂コラボ/" },
+    ],
   },
 
   {

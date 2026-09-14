@@ -1,4 +1,4 @@
-import { ClockFading, MessageCircleQuestionMark, Moon, Slash, X, type LucideIcon } from "lucide-react";
+import { Circle, ClockFading, MessageCircleQuestionMark, Moon, Slash, X, type LucideIcon } from "lucide-react";
 
 import type { PlaceStatus } from "@/types";
 
@@ -17,7 +17,7 @@ export interface PlaceStatusPresentation {
 export const PLACE_STATUS_PRESENTATION = {
   OPEN: {
     label: "營業中",
-    symbol: "",
+    symbol: Circle,
     className: "bg-emerald-700 text-white",
   },
   CLOSING_SOON: {

@@ -30,5 +30,5 @@ export const SITE_CONFIG = {
 
   mode: {
     type: "live",
-  } satisfies SiteMode,
+  } as SiteMode,
 } as const;

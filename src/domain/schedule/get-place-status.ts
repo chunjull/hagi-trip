@@ -57,3 +57,18 @@ export const getPlaceStatus = (place: Place, now: ZonedDateTimeParts): PlaceStat
 
   return "CLOSED";
 };
+
+/** UI boundary: missing or invalid business information must not imply a confirmed closure. */
+export const getPlaceStatusForDisplay = (place: Place, now: ZonedDateTimeParts): PlaceStatus | null => {
+  try {
+    if (place.statusMode === "businessHours" && !isBusinessInfoSuppressedDate(now.date)) {
+      const schedule = getScheduleForDate(place, now.date);
+      if (schedule === undefined || schedule?.length === 0) {
+        return null;
+      }
+    }
+    return getPlaceStatus(place, now);
+  } catch {
+    return null;
+  }
+};

@@ -47,7 +47,10 @@ export const formatDailySchedule = (schedule: DailySchedule | undefined): string
   return schedule.map(formatTimeSlot).join("／");
 };
 
-export const buildGoogleMapsUrl = (mapQuery: string): string | null => {
+export const buildGoogleMapsUrl = (mapQuery: unknown): string | null => {
+  if (typeof mapQuery !== "string") {
+    return null;
+  }
   const query = mapQuery.trim();
 
   if (!query) {

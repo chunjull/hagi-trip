@@ -89,7 +89,7 @@ const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
       </details>
     ) : null}
 
-    {info.kind !== "BUSINESS_INFO_UNAVAILABLE" && place.features && place.features.length > 0 ? (
+    {place.features && place.features.length > 0 ? (
       <details className="group mt-4 rounded-md" open={place.category === "hotel"}>
         <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 py-1 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
           聯名內容與指定日期資訊（{place.features.length}）
