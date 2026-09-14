@@ -12,20 +12,23 @@ interface DateSelectorProps {
 }
 
 const DateSelector = ({ id, inputRef, label = "選擇日期", onChange, value }: DateSelectorProps) => (
-  <div>
-    <label className="block text-sm font-semibold text-slate-950" htmlFor={id}>
+  <div className="min-w-0">
+    <label className="block text-sm font-semibold text-ink" htmlFor={id}>
       {label}
     </label>
-    <input
-      className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-base font-medium text-slate-950 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
-      id={id}
-      max={SITE_CONFIG.eventPeriod.end}
-      min={SITE_CONFIG.eventPeriod.start}
-      ref={inputRef}
-      type="date"
-      value={value}
-      onChange={(event) => onChange(event.currentTarget.value)}
-    />
+    {/* Keep padding outside the date input to avoid iOS WebKit's 100% width overflow. */}
+    <div className="mt-2 flex min-h-12 min-w-0 items-center rounded-md border border-brand-line bg-white px-3 py-2 focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-brand">
+      <input
+        className="block min-h-8 w-full min-w-0 max-w-full appearance-none border-0 bg-transparent p-0 text-base font-semibold text-brand focus:outline-none"
+        id={id}
+        max={SITE_CONFIG.eventPeriod.end}
+        min={SITE_CONFIG.eventPeriod.start}
+        ref={inputRef}
+        type="date"
+        value={value}
+        onChange={(event) => onChange(event.currentTarget.value)}
+      />
+    </div>
   </div>
 );
 

@@ -24,9 +24,8 @@ export const SITE_CONFIG = {
   },
 
   project: {
-    repositoryUrl: "https://github.com/chunjull/hagi-trip",
-    contactLabel: "GitHub Issues",
-    contactUrl: "https://github.com/chunjull/hagi-trip/issues",
+    contactLabel: "Threads",
+    contactUrl: "https://www.threads.com/@rueeenotrueee",
   },
 
   mode: {

@@ -8,6 +8,7 @@ import { Marker } from "react-leaflet";
 
 import { getPlaceStatusPresentation } from "@/components/map/place-status-presentation";
 import { PLACE_CATEGORY_ICONS } from "@/components/place/feature-display";
+import { getPlaceNumber } from "@/components/place/place-number";
 import type { Place, PlaceStatus } from "@/types";
 
 interface PlaceMarkerProps {
@@ -24,18 +25,13 @@ const PlaceMarker = ({ place, position, status, onSelect }: PlaceMarkerProps) =>
   const markerRef = useRef<LeafletMarker>(null);
   const presentation = getPlaceStatusPresentation(status ?? "HIDDEN");
   const statusLabel = status === null ? "營業狀態暫時無法判斷" : presentation.label;
-  const accessibleLabel = `${place.name}，${statusLabel}，開啟詳細資訊`;
+  const placeNumber = getPlaceNumber(place.id);
+  const accessibleLabel = `${placeNumber ? `景點 ${placeNumber}，` : ""}${place.name}，${statusLabel}，開啟詳細資訊`;
 
   const icon = useMemo(() => {
     const CategoryIcon = PLACE_CATEGORY_ICONS[place.category] ?? MapPin;
     const categoryIconMarkup = renderToStaticMarkup(
-      <CategoryIcon
-        aria-hidden="true"
-        className="place-marker-category-glyph"
-        size={24}
-        strokeWidth={2}
-        weight={place.category === "restaurant" ? "fill" : undefined}
-      />,
+      <CategoryIcon aria-hidden="true" className="place-marker-category-glyph" size={24} strokeWidth={2} weight={place.category === "restaurant" ? "fill" : undefined} />,
     );
     const StatusIcon = presentation.symbol;
     const statusSymbolMarkup = typeof StatusIcon === "string" ? StatusIcon : renderToStaticMarkup(<StatusIcon aria-hidden="true" size={12} strokeWidth={3} />);
@@ -49,7 +45,7 @@ const PlaceMarker = ({ place, position, status, onSelect }: PlaceMarkerProps) =>
       iconAnchor: [PLACE_MARKER_ICON_CENTER, PLACE_MARKER_ICON_CENTER],
       iconSize: [PLACE_MARKER_ICON_SIZE, PLACE_MARKER_ICON_SIZE],
     });
-  }, [place.category, presentation.className, presentation.symbol, status]);
+  }, [place.category, placeNumber, presentation.className, presentation.symbol, status]);
 
   useEffect(() => {
     const markerElement = markerRef.current?.getElement();

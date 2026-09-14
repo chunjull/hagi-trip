@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Project Documentation
+
+- [設計規格](./DESIGN.md)：產品流程、頁面配置、色彩與字體、元件狀態、無障礙及待確認差異。
+- [開發與產品規則](./AGENTS.md)
+- [開發進度](./TODO.md)
+- [資料異動紀錄](./src/data/CHANGELOG.md)
+
 ## Getting Started
 
 First, run the development server:

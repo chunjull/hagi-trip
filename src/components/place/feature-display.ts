@@ -76,7 +76,7 @@ export const COLLABORATION_STATE_PRESENTATION = {
   UPCOMING: {
     label: "聯名內容尚未開始",
     symbol: Loader,
-    className: "border-sky-300 bg-sky-50 text-sky-950",
+    className: "border-brand-line bg-brand-wash text-brand-dark",
   },
   ACTIVE: {
     label: "聯名內容提供中",
@@ -86,7 +86,7 @@ export const COLLABORATION_STATE_PRESENTATION = {
   ENDED: {
     label: "聯名內容已結束",
     symbol: HeartCrack,
-    className: "border-slate-300 bg-slate-100 text-slate-700",
+    className: "border-rule-strong bg-paper-muted text-ink-soft",
   },
 } satisfies Record<CollaborationState, CollaborationStatePresentation>;
 

@@ -28,10 +28,10 @@ const PlaceGroup = ({ date, description, heading, id, items }: PlaceGroupProps) 
   return (
     <section aria-labelledby={id}>
       <div>
-        <h2 className="text-lg font-semibold text-slate-950" id={id}>
-          {heading} <span className="text-sm font-medium text-slate-500">{items.length}</span>
+        <h2 className="handbook-title text-lg text-ink" id={id}>
+          {heading} <span className="text-sm font-medium text-ink-muted">{items.length}</span>
         </h2>
-        <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
+        <p className="mt-1 text-sm leading-6 text-ink-soft">{description}</p>
       </div>
       <ul className="mt-3 grid gap-3 lg:grid-cols-2">
         {items.map(({ info, place }) => (
@@ -49,7 +49,7 @@ const PlaceList = ({ date, places }: PlaceListProps) => {
     (result, place) => {
       const item = { place, info: getPlaceDayInfo(place, date) };
 
-      if (item.info.kind === "OPEN_TODAY") {
+      if (item.info.kind === "OPEN_TODAY" || item.info.kind === "PARTIALLY_CLOSED_TODAY") {
         result.open.push(item);
       } else if (item.info.kind === "CLOSED_TODAY") {
         result.closed.push(item);
@@ -69,18 +69,18 @@ const PlaceList = ({ date, places }: PlaceListProps) => {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-3 gap-2" aria-label="當日景點統計">
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center">
+        <a href="#open-places-title" className="rounded-md border border-brand-line bg-white p-3 text-center hover:bg-brand-wash">
           <p className="text-xl font-semibold text-emerald-950">{groups.open.length}</p>
           <p className="mt-1 text-xs text-emerald-900">營業</p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-slate-100 p-3 text-center">
-          <p className="text-xl font-semibold text-slate-900">{groups.closed.length}</p>
-          <p className="mt-1 text-xs text-slate-700">休息</p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-3 text-center">
-          <p className="text-xl font-semibold text-slate-900">{groups.unavailable.length}</p>
-          <p className="mt-1 text-xs text-slate-700">不適用</p>
-        </div>
+        </a>
+        <a href="#closed-places-title" className="rounded-md border border-brand-line bg-white p-3 text-center hover:bg-brand-wash">
+          <p className="text-xl font-semibold text-ink">{groups.closed.length}</p>
+          <p className="mt-1 text-xs text-ink-soft">休息</p>
+        </a>
+        <a href="#unavailable-places-title" className="rounded-md border border-brand-line bg-white p-3 text-center hover:bg-brand-wash">
+          <p className="text-xl font-semibold text-ink">{groups.unavailable.length}</p>
+          <p className="mt-1 text-xs text-ink-soft">不適用</p>
+        </a>
       </div>
 
       <PlaceGroup date={date} description="依官方排程，這些景點在所選日期有可利用時段。" heading="當日營業" id="open-places-title" items={groups.open} />

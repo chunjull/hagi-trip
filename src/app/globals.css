@@ -1,28 +1,136 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffcf5;
+  --foreground: #242823;
+  color-scheme: light;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-noto-sans-tc), sans-serif;
+  --color-brand: #004593;
+  --color-brand-dark: #00336d;
+  --color-brand-wash: #f0f6fc;
+  --color-brand-light: #eaf7ff;
+  --color-brand-line: #9eb9d4;
+  --color-paper: #fffcf5;
+  --color-paper-muted: #f3f0e8;
+  --color-ink: #242823;
+  --color-ink-soft: #454b50;
+  --color-ink-muted: #62686c;
+  --color-rule: #d6dce0;
+  --color-rule-strong: #9caebc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-noto-sans-tc), sans-serif;
+  }
+
+  :lang(ja) {
+    font-family: var(--font-noto-sans-jp), var(--font-noto-sans-tc), sans-serif;
+  }
+
+  ::selection {
+    background: #004593;
+    color: white;
+  }
+
+  a,
+  button,
+  input,
+  summary {
+    accent-color: #004593;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid #004593;
+    outline-offset: 3px;
+  }
+
+  time {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.handbook-background {
+  --cloud-pattern: url("/cloud.svg"), url("/clouds.svg");
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-brand-light);
+}
+
+/* A fixed layer also keeps the clouds stationary on mobile browsers. */
+.handbook-background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--cloud-pattern);
+  background-repeat: no-repeat;
+  background-position:
+    right -2rem top 5rem,
+    left -2rem bottom 7.5rem;
+  background-size: min(60vw, 320px) auto;
+  filter: invert(1);
+}
+
+.handbook-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+}
+
+.handbook-title::before {
+  content: "";
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 5px;
+  min-height: 1.5rem;
+  border-inline: 1px solid var(--color-brand);
+}
+
+.handbook-eyebrow {
+  color: var(--color-brand);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.brand-stamp,
+.place-number {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  border: 3px double var(--color-brand);
+  background: var(--color-paper);
+  color: var(--color-brand);
+}
+
+.brand-stamp {
+  width: 2.625rem;
+  height: 2.625rem;
+  border-radius: 0.5rem;
+  transform: rotate(-6deg);
+}
+
+.place-number {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .place-marker-icon {
@@ -43,11 +151,28 @@ body {
   display: grid;
   place-items: center;
   border-width: 2px;
-  border-color: #686868;
+  border-color: var(--color-brand-dark);
   border-radius: 9999px;
-  background: #f7f7f7;
-  color: #4e4e4e;
-  box-shadow: 0 3px 10px rgb(15 23 42 / 35%);
+  background: var(--color-paper);
+  color: var(--color-brand-dark);
+  box-shadow: 0 2px 8px rgb(0 69 147 / 20%);
+}
+
+.place-marker-number {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 1px solid var(--color-paper);
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: white;
+  font-family: var(--font-noto-sans-tc), sans-serif;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .place-marker-category-glyph {
@@ -75,6 +200,28 @@ body {
 }
 
 .leaflet-marker-icon.place-marker-icon:focus-visible .place-marker-category {
-  outline: 3px solid #0369a1;
+  outline: 3px solid var(--color-brand);
   outline-offset: 3px;
+}
+
+.leaflet-container {
+  font-family: var(--font-noto-sans-tc), sans-serif;
+}
+
+.leaflet-container .leaflet-bar {
+  border: 1px solid var(--color-brand-line);
+  box-shadow: 0 2px 8px rgb(0 69 147 / 15%);
+}
+
+.leaflet-container .leaflet-bar a {
+  background: var(--color-paper);
+  color: var(--color-brand);
+}
+
+.leaflet-container .leaflet-bar a:hover {
+  background: var(--color-brand-wash);
+}
+
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--color-brand);
 }

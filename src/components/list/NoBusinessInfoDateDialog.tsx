@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
-import ScheduledEventCard from "@/components/event/ScheduledEventCard";
 import DateSelector from "@/components/list/DateSelector";
 import type { IsoDate, ScheduledEvent } from "@/types";
+import Image from "next/image";
 
 interface NoBusinessInfoDateDialogProps {
   date: IsoDate;
@@ -13,7 +13,7 @@ interface NoBusinessInfoDateDialogProps {
   open: boolean;
 }
 
-const NoBusinessInfoDateDialog = ({ date, events, onSelectDate, open }: NoBusinessInfoDateDialogProps) => {
+const NoBusinessInfoDateDialog = ({ date, onSelectDate, open }: NoBusinessInfoDateDialogProps) => {
   const dateInputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -50,35 +50,33 @@ const NoBusinessInfoDateDialog = ({ date, events, onSelectDate, open }: NoBusine
       aria-describedby="no-business-info-description"
       aria-labelledby="no-business-info-title"
       aria-modal="true"
-      className="fixed inset-0 m-auto max-h-[90dvh] w-[min(34rem,calc(100%-2rem))] overflow-y-auto rounded-3xl bg-white p-0 text-slate-950 shadow-2xl backdrop:bg-slate-950/60"
+      className="fixed inset-0 m-auto max-h-[90dvh] w-[min(34rem,calc(100%-2rem))] overflow-y-auto rounded-xl border-t-4 border-brand bg-paper p-0 text-ink shadow-2xl backdrop:bg-slate-950/60"
       ref={dialogRef}
       role="dialog"
       onCancel={(event) => event.preventDefault()}
     >
       <div className="p-5 sm:p-6">
-        <p className="text-sm font-medium text-sky-800">指定日期營業資訊</p>
+        <p className="text-sm font-medium text-brand">指定日期營業資訊</p>
         <h2 className="mt-1 text-xl font-semibold" id="no-business-info-title">
           11 月 28 日不提供一般營業資訊
         </h2>
-        <p className="mt-3 text-sm leading-6 text-slate-700" id="no-business-info-description">
-          景點位置與列車運行資訊仍然有效，但本日不判斷商店及設施是否營業。請選擇其他日期後繼續查看清單。
+        <p className="mt-3 text-sm leading-6 text-ink-soft" id="no-business-info-description">
+          請選擇其他日期後繼續查看清單。
         </p>
 
-        <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <div className="mt-5 rounded-lg border border-rule bg-paper p-4">
           <DateSelector id="replacement-date" inputRef={dateInputRef} label="改選其他日期" value={date} onChange={onSelectDate} />
-          <p className="mt-2 text-xs leading-5 text-slate-600">必須選擇 2026/10/01～2026/12/31 之間、且不是 2026/11/28 的日期。</p>
+          <p className="mt-2 text-xs leading-5 text-ink-soft">必須選擇 2026/10/01～2026/12/31 之間、且不是 2026/11/28 的日期。</p>
         </div>
 
-        <section aria-labelledby="suppressed-date-events-title" className="mt-6">
-          <h3 className="text-base font-semibold" id="suppressed-date-events-title">
-            11 月 28 日列車資訊
-          </h3>
-          <div className="mt-3 space-y-3">
-            {events.map((event) => (
-              <ScheduledEventCard date={date} event={event} key={event.id} />
-            ))}
-          </div>
-        </section>
+        <Image
+          alt="銀魂漫畫：我是來地獄掀起革命的。"
+          className="mt-5 h-auto w-full rounded-md"
+          height={640}
+          src="/1128.jpg"
+          unoptimized
+          width={913}
+        />
       </div>
     </dialog>
   );

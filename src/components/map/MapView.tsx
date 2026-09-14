@@ -20,7 +20,7 @@ export interface MapViewProps {
 const MapView = ({ items, onSelectPlace }: MapViewProps) => {
   if (items.length === 0) {
     return (
-      <div className="flex h-full min-h-0 items-center justify-center bg-slate-100 px-6 text-center text-sm text-slate-700" role="status">
+      <div className="flex h-full min-h-0 items-center justify-center bg-paper-muted px-6 text-center text-sm text-ink-soft" role="status">
         目前沒有可顯示於地圖的景點。
       </div>
     );

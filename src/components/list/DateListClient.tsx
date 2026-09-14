@@ -72,20 +72,20 @@ const DateListClient = () => {
 
   return (
     <section aria-label="指定日期景點清單" className="space-y-6">
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-lg border border-brand-line bg-paper p-4 shadow-sm sm:p-5">
         <DateSelector id="list-date" inputRef={mainDateInputRef} value={selectedDate} onChange={handleSelectDate} />
-        <p className="mt-3 text-sm font-semibold text-slate-950">
+        <p className="mt-3 text-sm font-semibold text-ink">
           目前查看：<time dateTime={selectedDate}>{formatSelectedDate(selectedDate)}</time>
         </p>
-        <p className="mt-1 text-xs leading-5 text-slate-600">日期判斷以活動所在地的日本日期為準。</p>
+        <p className="mt-1 text-xs leading-5 text-ink-soft">日期判斷以活動所在地的日本日期為準。</p>
       </div>
 
       <div aria-hidden={businessInfoSuppressed || undefined} className="space-y-8" inert={businessInfoSuppressed}>
         <section aria-labelledby="scheduled-events-title">
-          <h2 className="text-lg font-semibold text-slate-950" id="scheduled-events-title">
+          <h2 className="handbook-title text-lg text-ink" id="scheduled-events-title">
             指定日期活動
           </h2>
-          <p className="mt-1 text-sm leading-6 text-slate-600">列車運行日依官方逐日公告判斷，與一般景點營業資訊分開。</p>
+          <p className="mt-1 text-sm leading-6 text-ink-soft">列車運行日依官方逐日公告判斷，與一般景點營業資訊分開。</p>
           <div className="mt-3 space-y-3">
             {SCHEDULED_EVENTS.map((event) => (
               <ScheduledEventCard date={selectedDate} event={event} key={event.id} />
@@ -95,7 +95,7 @@ const DateListClient = () => {
 
         <PlaceList date={selectedDate} places={PLACES} />
 
-        <p className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-600">
+        <p className="rounded-lg border border-rule bg-white px-4 py-3 text-xs leading-5 text-ink-soft">
           {SITE_CONFIG.sourcePolicy.disclaimer}
         </p>
       </div>

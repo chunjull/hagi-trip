@@ -10,7 +10,6 @@ import MarkerLegend from "@/components/map/MarkerLegend";
 import { formatEventDateTime, isValidCoordinates } from "@/components/place/place-display";
 import PlaceDetailSheet from "@/components/place/PlaceDetailSheet";
 import { PLACES } from "@/data/places";
-import { SITE_CONFIG } from "@/data/site-config";
 import { getEventLocalNow } from "@/domain/datetime/event-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
 import { getPlaceStatus } from "@/domain/schedule/get-place-status";
@@ -19,7 +18,7 @@ import type { Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
 const MapView = dynamic<MapViewProps>(() => import("./MapView"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full min-h-0 items-center justify-center bg-slate-100 text-sm text-slate-700" role="status">
+    <div className="flex h-full min-h-0 items-center justify-center bg-paper-muted text-sm text-ink-soft" role="status">
       地圖載入中…
     </div>
   ),
@@ -49,15 +48,15 @@ const PlaceButtonList = ({ heading, places, onSelectPlace }: PlaceButtonListProp
   }
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-4" aria-labelledby={`${heading}-title`}>
-      <h2 className="text-sm font-semibold text-slate-950" id={`${heading}-title`}>
+    <section className="rounded-lg border border-rule bg-white p-4" aria-labelledby={`${heading}-title`}>
+      <h2 className="text-sm font-semibold text-ink" id={`${heading}-title`}>
         {heading}
       </h2>
       <ul className="mt-3 grid gap-2 sm:grid-cols-2">
         {places.map((place) => (
           <li key={place.id}>
             <button
-              className="min-h-11 w-full rounded-xl border border-slate-300 px-3 py-2 text-left text-sm font-medium text-slate-800 hover:bg-slate-50 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+              className="min-h-11 w-full rounded-md border border-rule-strong px-3 py-2 text-left text-sm font-medium text-ink hover:bg-paper focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand"
               lang="ja"
               type="button"
               onClick={(event) => onSelectPlace(place, event.currentTarget)}
@@ -170,12 +169,12 @@ const MapHomeClient = () => {
 
       <div className="pointer-events-none absolute inset-0 z-900 flex flex-col justify-between p-3 pb-7 sm:p-5 sm:pb-7">
         <div className="space-y-2 pr-12">
-          <header className="pointer-events-auto w-full max-w-sm rounded-2xl border border-white/70 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+          <header className="pointer-events-auto w-full max-w-sm rounded-lg border border-brand-line border-t-2 border-t-brand bg-paper/95 px-4 py-3 shadow-lg backdrop-blur">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-medium text-slate-500">活動所在地現在時間</p>
+                <p className="text-xs font-semibold tracking-wide text-brand">活動所在地現在時間</p>
                 {now ? (
-                  <time className="mt-0.5 block text-sm font-semibold text-slate-950" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
+                  <time className="mt-0.5 block text-sm font-semibold text-ink" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
                     {formatEventDateTime(now)}
                   </time>
                 ) : timeError ? (
@@ -183,7 +182,7 @@ const MapHomeClient = () => {
                     無法取得日本當地時間，暫不顯示營業狀態。
                   </p>
                 ) : (
-                  <p className="mt-0.5 text-sm font-semibold text-slate-700" role="status">
+                  <p className="mt-0.5 text-sm font-semibold text-ink-soft" role="status">
                     正在取得日本當地時間…
                   </p>
                 )}
@@ -192,7 +191,7 @@ const MapHomeClient = () => {
           </header>
 
           {businessInfoSuppressed ? (
-            <p className="pointer-events-auto max-w-sm rounded-2xl border border-sky-300 bg-sky-50/95 px-4 py-3 text-sm leading-6 text-sky-950 shadow-lg backdrop-blur" role="status">
+            <p className="pointer-events-auto max-w-sm rounded-lg border border-brand-line bg-brand-wash/95 px-4 py-3 text-sm leading-6 text-brand-dark shadow-lg backdrop-blur" role="status">
               11 月 28 日不提供一般營業資訊。地圖上的景點位置仍可查看，實際營業狀況請向各設施官方確認。
             </p>
           ) : null}
@@ -201,11 +200,7 @@ const MapHomeClient = () => {
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="pointer-events-auto w-full max-w-md space-y-2">
             <MarkerLegend />
-            {/* <PlaceButtonList heading="尚未顯示於地圖的景點" places={unmappedPlaces} onSelectPlace={handleSelectPlace} /> */}
           </div>
-          <p className="pointer-events-auto max-w-sm rounded-xl border border-slate-200 bg-white/95 px-3 py-2 text-xs leading-5 text-slate-600 shadow-lg backdrop-blur">
-            {SITE_CONFIG.sourcePolicy.disclaimer}
-          </p>
         </div>
       </div>
 

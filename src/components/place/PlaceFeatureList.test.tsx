@@ -34,7 +34,7 @@ describe("PlaceFeatureList", () => {
 
     expect(defaultMarkup).not.toContain("09:50–12:00／15:00–18:00");
     expect(homeMarkup).toContain("聯名內容尚未開始");
-    expect(homeMarkup).toContain("<dt class=\"text-xs font-medium text-slate-500\">提供時間</dt>");
+    expect(homeMarkup).toMatch(/<dt\b[^>]*>提供時間<\/dt>/);
     expect(homeMarkup).toContain("09:50–12:00／15:00–18:00");
   });
 

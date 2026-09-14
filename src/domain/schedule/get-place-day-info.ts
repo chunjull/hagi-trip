@@ -1,9 +1,10 @@
+import { isFeatureDateApplicable } from "@/domain/event/feature-availability";
 import { getScheduleForDate } from "@/domain/schedule/get-schedule-for-date";
 import type { IsoDate, Place, TimeSlot } from "@/types";
 
 export type PlaceDayInfo =
   | {
-      kind: "OPEN_TODAY";
+      kind: "OPEN_TODAY" | "PARTIALLY_CLOSED_TODAY";
       schedule: TimeSlot[];
       isOverride: boolean;
     }
@@ -42,8 +43,21 @@ export const getPlaceDayInfo = (place: Place, date: IsoDate): PlaceDayInfo => {
     };
   }
 
+  const hasUnavailableFeature = Boolean(
+    place.features &&
+      place.features.length > 1 &&
+      place.features.some((feature) => {
+        if (!isFeatureDateApplicable(feature, date)) {
+          return true;
+        }
+
+        const featureSchedule = getScheduleForDate(feature, date);
+        return featureSchedule === null || featureSchedule?.length === 0;
+      }),
+  );
+
   return {
-    kind: "OPEN_TODAY",
+    kind: hasUnavailableFeature ? "PARTIALLY_CLOSED_TODAY" : "OPEN_TODAY",
     schedule: dailySchedule,
     isOverride,
   };

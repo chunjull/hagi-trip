@@ -33,12 +33,12 @@ export const PLACE_STATUS_PRESENTATION = {
   NOT_OPEN_YET: {
     label: "今日尚未開始營業",
     symbol: ClockFading,
-    className: "bg-sky-100 text-sky-950",
+    className: "bg-brand-light text-brand-dark",
   },
   OPEN_STATUS_UNCERTAIN: {
     label: "狀態需現場／官方確認",
     symbol: MessageCircleQuestionMark,
-    className: "bg-slate-100 text-slate-950",
+    className: "bg-paper-muted text-ink",
   },
   CLOSED: {
     label: "今日營業已結束",
@@ -53,7 +53,7 @@ export const PLACE_STATUS_PRESENTATION = {
   HIDDEN: {
     label: "不顯示營業狀態",
     symbol: Slash,
-    className: "bg-white text-slate-900",
+    className: "bg-white text-ink",
   },
 } satisfies Record<PlaceStatus, PlaceStatusPresentation>;
 

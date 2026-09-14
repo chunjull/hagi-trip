@@ -8,6 +8,7 @@ import PlaceFeatureList from "@/components/place/PlaceFeatureList";
 import { buildGoogleMapsUrl } from "@/components/place/place-display";
 import PlaceStatusBadge from "@/components/place/PlaceStatusBadge";
 import SupportStoreBadge from "@/components/place/SupportStoreBadge";
+import { getPlaceNumber } from "@/components/place/place-number";
 import { getScheduledEventsRelatedToPlace } from "@/domain/event/scheduled-event";
 import { getScheduleForDate } from "@/domain/schedule/get-schedule-for-date";
 import type { BusinessSchedule, DailySchedule, IsoDate, Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
@@ -73,7 +74,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
     <dialog
       aria-labelledby="place-detail-title"
       aria-modal="true"
-      className="fixed inset-x-0 bottom-0 top-auto m-0 h-[85dvh] max-h-[85dvh] w-full max-w-none overflow-hidden rounded-t-3xl bg-white p-0 text-slate-950 shadow-2xl backdrop:bg-slate-950/55 sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-full sm:w-[min(30rem,100vw)] sm:rounded-none"
+      className="fixed inset-x-0 bottom-0 top-auto m-0 h-[85dvh] max-h-[85dvh] w-full max-w-none overflow-hidden rounded-t-xl border-t-2 border-t-brand bg-paper p-0 text-ink shadow-2xl backdrop:bg-slate-950/55 sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-full sm:w-[min(30rem,100vw)] sm:rounded-none"
       ref={dialogRef}
       onClick={(event) => {
         if (event.target === event.currentTarget) {
@@ -84,9 +85,9 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
     >
       {place ? (
         <article className="flex h-full min-h-0 flex-col">
-          <header className="z-10 flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4">
+          <header className="z-10 flex shrink-0 items-start justify-between gap-4 border-b border-brand-line bg-paper px-5 py-4">
             <div>
-              <p className="text-xs font-medium text-slate-500">景點詳細資訊</p>
+              <p className="handbook-eyebrow">銀魂曆 · 景點 {getPlaceNumber(place.id)}</p>
               <h2 className="mt-1 text-xl font-semibold leading-tight" id="place-detail-title" lang="ja">
                 {place.name}
               </h2>
@@ -98,7 +99,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
             </div>
             <button
               aria-label={`關閉 ${place.name} 詳細資訊`}
-              className="grid size-11 shrink-0 place-items-center rounded-full border border-slate-300 bg-white text-xl font-medium text-slate-800 hover:bg-slate-100 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+              className="grid size-11 shrink-0 place-items-center rounded-full border border-brand-line bg-white text-xl font-medium text-brand hover:bg-brand-wash focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand"
               ref={closeButtonRef}
               type="button"
               onClick={() => dialogRef.current?.close()}
@@ -110,18 +111,18 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
           <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
             <div className="space-y-4">
               {businessInfoSuppressed ? (
-                <p className="rounded-xl border border-sky-300 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-950">本日不提供一般營業狀態與當日營業時間，請向各設施官方確認。</p>
+                <p className="rounded-md border border-brand-line bg-brand-wash px-4 py-3 text-sm leading-6 text-brand-dark">本日不提供一般營業狀態與當日營業時間，請向各設施官方確認。</p>
               ) : place.statusMode === "none" ? (
-                <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700">此地點不提供即時營業狀態。</p>
+                <p className="rounded-md bg-paper-muted px-4 py-3 text-sm leading-6 text-ink-soft">此地點不提供即時營業狀態。</p>
               ) : status === null ? (
-                <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700">營業狀態暫時無法判斷。</p>
+                <p className="rounded-md bg-paper-muted px-4 py-3 text-sm leading-6 text-ink-soft">營業狀態暫時無法判斷。</p>
               ) : (
                 <PlaceStatusBadge status={status} />
               )}
 
-              <dl className="grid gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <dl className="grid gap-4 rounded-lg border border-rule bg-paper p-4">
                 <div>
-                  <dt className="text-xs font-medium text-slate-500">地址</dt>
+                  <dt className="text-xs font-medium text-ink-muted">地址</dt>
                   <dd className="mt-1 text-sm leading-6" lang="ja">
                     {place.address}
                   </dd>
@@ -130,7 +131,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 {!businessInfoSuppressed && place.statusMode === "businessHours" && now ? <BusinessHours schedule={placeSchedule} /> : null}
               </dl>
 
-              {place.description ? <p className="text-sm leading-7 text-slate-700">{place.description}</p> : null}
+              {place.description ? <p className="text-sm leading-7 text-ink-soft">{place.description}</p> : null}
             </div>
 
             {relatedEvents.length > 0 ? (
@@ -138,7 +139,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 <h3 className="text-base font-semibold" id="place-events-title">
                   指定日期活動
                 </h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">列車運行資訊與一般營業狀態分開判斷。</p>
+                <p className="mt-1 text-sm leading-6 text-ink-soft">列車運行資訊與一般營業狀態分開判斷。</p>
                 {now ? (
                   <div className="mt-3 space-y-3">
                     {relatedEvents.map((event) => (
@@ -146,7 +147,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                     ))}
                   </div>
                 ) : (
-                  <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">無法取得日本當地日期，暫時不能判斷本日是否運行。</p>
+                  <p className="mt-3 rounded-md bg-paper-muted px-3 py-2 text-sm text-ink-soft">無法取得日本當地日期，暫時不能判斷本日是否運行。</p>
                 )}
               </section>
             ) : null}
@@ -158,21 +159,16 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 </h3>
                 {now ? (
                   <div className="mt-3">
-                    <PlaceFeatureList
-                      businessInfoSuppressed={businessInfoSuppressed}
-                      date={now.date}
-                      features={place.features}
-                      scheduleMode="always"
-                    />
+                    <PlaceFeatureList businessInfoSuppressed={businessInfoSuppressed} date={now.date} features={place.features} scheduleMode="always" />
                   </div>
                 ) : (
-                  <p className="mt-3 rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">無法取得日本當地日期，暫時不能判斷聯名內容狀態。</p>
+                  <p className="mt-3 rounded-md bg-paper-muted px-3 py-2 text-sm text-ink-soft">無法取得日本當地日期，暫時不能判斷聯名內容狀態。</p>
                 )}
               </section>
             ) : null}
 
             {place.notices && place.notices.length > 0 ? (
-              <section aria-labelledby="place-notices-title" className="mt-7 rounded-2xl bg-amber-50 p-4 text-amber-950">
+              <section aria-labelledby="place-notices-title" className="mt-7 rounded-lg bg-amber-50 p-4 text-amber-950">
                 <h3 className="text-sm font-semibold" id="place-notices-title">
                   注意事項
                 </h3>
@@ -192,7 +188,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 {place.sources.map((source) => (
                   <li key={`${source.label}-${source.url}`}>
                     <a
-                      className="inline-flex min-h-11 items-center text-sky-800 underline decoration-sky-300 underline-offset-4 hover:text-sky-950 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+                      className="inline-flex min-h-11 items-center text-brand underline decoration-brand-line underline-offset-4 hover:text-brand-dark focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand"
                       href={source.url}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -205,10 +201,10 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
               </ul>
             </section>
           </div>
-          <footer className="shrink-0 border-t border-slate-200 bg-white px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
+          <footer className="shrink-0 border-t border-brand-line bg-paper px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
             {mapUrl ? (
               <a
-                className="flex min-h-12 w-full items-center justify-center rounded-xl bg-slate-950 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+                className="flex min-h-12 w-full items-center justify-center rounded-md bg-brand px-4 py-3 text-center text-sm font-semibold text-white hover:bg-brand-dark focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand"
                 href={mapUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -217,7 +213,7 @@ const PlaceDetailSheet = ({ businessInfoSuppressed, now, onClosed, place, status
                 <Navigation className="size-4 ml-2" />
               </a>
             ) : (
-              <p className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm text-slate-700">地圖連結暫時無法使用。</p>
+              <p className="rounded-md bg-paper-muted px-4 py-3 text-center text-sm text-ink-soft">地圖連結暫時無法使用。</p>
             )}
           </footer>
         </article>
