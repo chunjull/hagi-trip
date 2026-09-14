@@ -21,7 +21,7 @@ interface PlaceListItemProps {
 }
 
 const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
-  <article className="h-full rounded-lg border border-rule border-t-2 border-t-brand bg-white p-4 shadow-sm">
+  <article className="rounded-lg border border-rule border-t-2 border-t-brand bg-white p-4 shadow-sm">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div className="flex w-full min-w-0 items-start gap-3 sm:w-auto sm:flex-1">
         <span className="place-number" aria-label={`景點編號 ${getPlaceNumber(place.id)}`}>
@@ -89,7 +89,7 @@ const PlaceListItem = ({ date, info, place }: PlaceListItemProps) => (
       </details>
     ) : null}
 
-    {place.features && place.features.length > 0 ? (
+    {place.statusMode !== "none" && place.features && place.features.length > 0 ? (
       <details className="group mt-4 rounded-md" open={place.category === "hotel"}>
         <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 py-1 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
           聯名內容與指定日期資訊（{place.features.length}）

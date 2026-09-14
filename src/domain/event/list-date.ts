@@ -1,5 +1,5 @@
 import { SITE_CONFIG } from "@/data/site-config";
-import { getSiteLocalNow } from "@/domain/datetime/site-time";
+import { getSiteLocalNow, getSiteMode } from "@/domain/datetime/site-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
 import type { IsoDate } from "@/types";
 
@@ -39,6 +39,10 @@ export const getDefaultListDate = (referenceTime: Date = new Date()): IsoDate =>
   clampDateToEventPeriod(getSiteLocalNow(referenceTime).date);
 
 export const getInitialListDate = (queryDate: string | null | undefined, referenceTime: Date = new Date()): IsoDate => {
+  if (getSiteMode(referenceTime).type === "archive") {
+    return getDefaultListDate(referenceTime);
+  }
+
   const parsedQueryDate = parseIsoDate(queryDate);
 
   if (parsedQueryDate && isDateInEventPeriod(parsedQueryDate)) {

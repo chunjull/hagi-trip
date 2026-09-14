@@ -4,6 +4,7 @@ import { SITE_CONFIG } from "@/data/site-config";
 import type { IsoDate } from "@/types";
 
 interface DateSelectorProps {
+  disabled?: boolean;
   id: string;
   inputRef?: RefObject<HTMLInputElement | null>;
   label?: string;
@@ -11,7 +12,7 @@ interface DateSelectorProps {
   value: IsoDate;
 }
 
-const DateSelector = ({ id, inputRef, label = "選擇日期", onChange, value }: DateSelectorProps) => (
+const DateSelector = ({ disabled = false, id, inputRef, label = "選擇日期", onChange, value }: DateSelectorProps) => (
   <div className="min-w-0">
     <label className="block text-sm font-semibold text-ink" htmlFor={id}>
       {label}
@@ -21,6 +22,7 @@ const DateSelector = ({ id, inputRef, label = "選擇日期", onChange, value }:
       <input
         className="block min-h-8 w-full min-w-0 max-w-full appearance-none border-0 bg-transparent p-0 text-base font-semibold text-brand focus:outline-none"
         id={id}
+        disabled={disabled}
         max={SITE_CONFIG.eventPeriod.end}
         min={SITE_CONFIG.eventPeriod.start}
         ref={inputRef}

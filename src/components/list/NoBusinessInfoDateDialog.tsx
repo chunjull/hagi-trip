@@ -64,7 +64,7 @@ const NoBusinessInfoDateDialog = ({ date, events, onSelectDate, open }: NoBusine
       }}
       onCancel={(event) => event.preventDefault()}
     >
-      <div className="p-5 sm:p-6">
+      <div className="p-5 sm:p-6 bg-white">
         <p className="text-sm font-medium text-brand">指定日期營業資訊</p>
         <h2 className="mt-1 text-xl font-semibold" id="no-business-info-title">
           11 月 28 日不提供一般營業資訊
@@ -78,20 +78,7 @@ const NoBusinessInfoDateDialog = ({ date, events, onSelectDate, open }: NoBusine
           <p className="mt-2 text-xs leading-5 text-ink-soft">必須選擇 2026/10/01～2026/12/31 之間、且不是 2026/11/28 的日期。</p>
         </div>
 
-        <section aria-labelledby="suppressed-date-events-title" className="mt-5 space-y-3">
-          <h3 className="font-semibold" id="suppressed-date-events-title">本日列車運行資訊</h3>
-          <p className="text-sm leading-6 text-ink-soft">列車運行不受一般營業資訊限制，仍可查看。</p>
-          {events.map((event) => <ScheduledEventCard date={date} event={event} key={event.id} />)}
-        </section>
-
-        <Image
-          alt="銀魂漫畫：我是來地獄掀起革命的。"
-          className="mt-5 h-auto w-full rounded-md"
-          height={640}
-          src="/1128.jpg"
-          unoptimized
-          width={913}
-        />
+        <Image alt="銀魂漫畫：我是來地獄掀起革命的。" className="mt-5 h-auto w-full rounded-md" height={640} src="/1128.jpg" unoptimized width={913} />
       </div>
     </dialog>
   );

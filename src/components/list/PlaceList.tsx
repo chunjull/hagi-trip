@@ -33,7 +33,7 @@ const PlaceGroup = ({ date, description, heading, id, items }: PlaceGroupProps) 
         </h2>
         <p className="mt-1 text-sm leading-6 text-ink-soft">{description}</p>
       </div>
-      <ul className="mt-3 grid gap-3 lg:grid-cols-2">
+      <ul className="mt-3 grid items-start gap-3 lg:grid-cols-2">
         {items.map(({ info, place }) => (
           <li key={place.id}>
             <PlaceListItem date={date} info={info} place={place} />
@@ -84,7 +84,7 @@ const PlaceList = ({ date, places }: PlaceListProps) => {
       </div>
 
       <PlaceGroup date={date} description="依官方排程，這些景點在所選日期有可利用時段。" heading="當日營業" id="open-places-title" items={groups.open} />
-      <PlaceGroup date={date} description="依官方 weekly schedule 或指定日期規則，這些景點當日休息。" heading="當日休息" id="closed-places-title" items={groups.closed} />
+      <PlaceGroup date={date} description="依官方排程或指定日期規則，這些景點當日休息。" heading="當日休息" id="closed-places-title" items={groups.closed} />
       <PlaceGroup date={date} description="住宿合作與未提供一般營業時間的地點仍會保留，但不推測營業狀態。" heading="不提供一般營業判斷" id="unavailable-places-title" items={groups.unavailable} />
     </div>
   );

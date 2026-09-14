@@ -2,8 +2,9 @@
 
 import type { LatLngTuple } from "leaflet";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
+import { useSiteTime } from "@/components/event/use-site-time";
 import MapErrorBoundary from "@/components/map/MapErrorBoundary";
 import type { MapPlaceItem, MapViewProps } from "@/components/map/MapView";
 import MarkerLegend from "@/components/map/MarkerLegend";
@@ -11,10 +12,9 @@ import { formatEventDateTime, isValidCoordinates } from "@/components/place/plac
 import PlaceDetailSheet from "@/components/place/PlaceDetailSheet";
 import { PLACES } from "@/data/places";
 import { SITE_CONFIG } from "@/data/site-config";
-import { getSiteLocalNow } from "@/domain/datetime/site-time";
 import { isBusinessInfoSuppressedDate } from "@/domain/event/business-info";
 import { getPlaceStatusForDisplay } from "@/domain/schedule/get-place-status";
-import type { Place, PlaceStatus, ZonedDateTimeParts } from "@/types";
+import type { Place, PlaceStatus } from "@/types";
 
 const MapView = dynamic<MapViewProps>(() => import("./MapView"), {
   ssr: false,
@@ -64,40 +64,9 @@ const PlaceButtonList = ({ heading, places, onSelectPlace }: PlaceButtonListProp
 };
 
 const MapHomeClient = () => {
-  const [now, setNow] = useState<ZonedDateTimeParts | null>(null);
+  const { now, mode, timeError } = useSiteTime();
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-  const [timeError, setTimeError] = useState(false);
   const returnFocusRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const updateNow = () => {
-      try {
-        setNow(getSiteLocalNow());
-        setTimeError(false);
-      } catch {
-        setNow(null);
-        setTimeError(true);
-      }
-    };
-
-    updateNow();
-    if (SITE_CONFIG.mode.type === "archive") {
-      return;
-    }
-    const timer = window.setInterval(updateNow, 60_000);
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        updateNow();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
 
   const placeStatuses = useMemo(() => {
     const statuses = new Map<string, PlaceStatus | null>();
@@ -156,7 +125,7 @@ const MapHomeClient = () => {
             <p className="text-sm font-semibold text-red-900" role="alert">
               地圖暫時無法顯示，仍可從下方清單查看景點詳細資訊。
             </p>
-              <PlaceButtonList heading="合作景點" places={MAP_PLACES} onSelectPlace={handleSelectPlace} />
+            <PlaceButtonList heading="合作景點" places={MAP_PLACES} onSelectPlace={handleSelectPlace} />
           </div>
         }
       >
@@ -168,7 +137,7 @@ const MapHomeClient = () => {
           <header className="pointer-events-auto w-full max-w-sm rounded-lg border border-brand-line border-t-2 border-t-brand bg-paper/95 px-4 py-3 shadow-lg backdrop-blur">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold tracking-wide text-brand">{SITE_CONFIG.mode.type === "archive" ? "紀念模式・日本時間" : "活動所在地現在時間"}</p>
+                <p className="text-xs font-semibold tracking-wide text-brand">{mode?.type === "archive" ? "紀念模式・日本時間" : "活動所在地現在時間"}</p>
                 {now ? (
                   <time className="mt-0.5 block text-sm font-semibold text-ink" dateTime={`${now.date}T${String(now.hours).padStart(2, "0")}:${String(now.minutes).padStart(2, "0")}:00+09:00`}>
                     {formatEventDateTime(now)}
@@ -202,7 +171,6 @@ const MapHomeClient = () => {
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="pointer-events-auto w-full max-w-md space-y-2">
             <MarkerLegend />
-            <p className="rounded-md border border-rule bg-paper/95 px-3 py-2 text-xs leading-5 text-ink-soft">{SITE_CONFIG.sourcePolicy.disclaimer}</p>
           </div>
         </div>
       </div>

@@ -3,8 +3,25 @@ import { getEventLocalNow } from "@/domain/datetime/event-time";
 import { parseClockTime } from "@/domain/datetime/clock-time";
 import type { SiteMode, ZonedDateTimeParts } from "@/types";
 
+/** Resolve the mode at runtime so static exports can automatically enter archive mode. */
+export const getSiteMode = (referenceTime: Date = new Date(), configuredMode: SiteMode = SITE_CONFIG.mode): SiteMode => {
+  if (!Number.isFinite(referenceTime.getTime())) {
+    throw new RangeError("Site time requires a valid reference instant.");
+  }
+
+  if (configuredMode.type === "archive") {
+    return configuredMode;
+  }
+
+  if (referenceTime.getTime() >= new Date(SITE_CONFIG.archive.startsAt).getTime()) {
+    return { type: "archive", frozenDateTime: SITE_CONFIG.archive.frozenDateTime };
+  }
+
+  return configuredMode;
+};
+
 /** Archive timestamps must identify an instant, including an explicit timezone. */
-export const getSiteLocalNow = (referenceTime: Date = new Date(), mode: SiteMode = SITE_CONFIG.mode): ZonedDateTimeParts => {
+export const getSiteLocalNow = (referenceTime: Date = new Date(), mode: SiteMode = getSiteMode(referenceTime)): ZonedDateTimeParts => {
   if (mode.type === "live") {
     return getEventLocalNow(referenceTime);
   }

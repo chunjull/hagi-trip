@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 
 import ScheduledEventCard from "@/components/event/ScheduledEventCard";
+import { useSiteTime } from "@/components/event/use-site-time";
 import DateSelector from "@/components/list/DateSelector";
 import NoBusinessInfoDateDialog from "@/components/list/NoBusinessInfoDateDialog";
 import PlaceList from "@/components/list/PlaceList";
@@ -28,7 +29,9 @@ const DateListClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryDate = searchParams.get("date");
-  const selectedDate = getInitialListDate(queryDate);
+  const { now, mode, timeError } = useSiteTime();
+  const isArchive = mode?.type === "archive";
+  const selectedDate = now ? (isArchive ? now.date : getInitialListDate(queryDate)) : SITE_CONFIG.eventPeriod.start;
   const mainDateInputRef = useRef<HTMLInputElement>(null);
   const wasSuppressedRef = useRef(isBusinessInfoSuppressedDate(selectedDate));
 
@@ -46,6 +49,8 @@ const DateListClient = () => {
 
   const handleSelectDate = useCallback(
     (value: string) => {
+      if (isArchive) return;
+
       const parsedDate = parseIsoDate(value);
 
       if (!parsedDate || !isDateInEventPeriod(parsedDate)) {
@@ -56,7 +61,7 @@ const DateListClient = () => {
       nextSearchParams.set("date", parsedDate);
       router.replace(`/list?${nextSearchParams.toString()}`, { scroll: false });
     },
-    [router, searchParams],
+    [isArchive, router, searchParams],
   );
 
   const handleSelectReplacementDate = useCallback(
@@ -70,14 +75,24 @@ const DateListClient = () => {
     [handleSelectDate],
   );
 
+  if (!now) {
+    return (
+      <p className="rounded-lg border border-rule bg-white p-4 text-sm text-ink-soft" role={timeError ? "alert" : "status"}>
+        {timeError ? "無法取得日本當地時間，暫不顯示日期清單。" : "日期清單載入中…"}
+      </p>
+    );
+  }
+
   return (
     <section aria-label="指定日期景點清單" className="space-y-6">
       <div className="rounded-lg border border-brand-line bg-paper p-4 shadow-sm sm:p-5">
-        <DateSelector id="list-date" inputRef={mainDateInputRef} value={selectedDate} onChange={handleSelectDate} />
+        <DateSelector disabled={isArchive} id="list-date" inputRef={mainDateInputRef} value={selectedDate} onChange={handleSelectDate} />
         <p className="mt-3 text-sm font-semibold text-ink">
           目前查看：<time dateTime={selectedDate}>{formatSelectedDate(selectedDate)}</time>
         </p>
-        <p className="mt-1 text-xs leading-5 text-ink-soft">日期判斷以活動所在地的日本日期為準。</p>
+        <p className="mt-1 text-xs leading-5 text-ink-soft">
+          {isArchive ? "紀念模式：清單固定於地圖的凍結日期，無法切換日期。" : "日期判斷以活動所在地的日本日期為準。"}
+        </p>
       </div>
 
       <div aria-hidden={businessInfoSuppressed || undefined} className="space-y-8" inert={businessInfoSuppressed}>

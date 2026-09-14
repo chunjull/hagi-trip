@@ -44,9 +44,13 @@ export default function AboutPage() {
             <ul className="list-disc space-y-2 pl-5">
               <li>「景點地圖」依日本當地現在時間顯示 marker 狀態，點選 marker 可查看詳細內容並交由 Google Maps 導航。</li>
               <li>「日期清單」可選擇活動期間內的一天，查看各地點當日營業、休息、合作內容與列車運行資訊。</li>
-              <li>部分地標包含多個聯名活動，會根據該地標最早與最晚的營業時間為判斷基準，請使用者務必事先確認各聯名活動實際營業時間。</li>
+              <li>部分地標包含多個聯名活動，景點會根據該地標最早與最晚的營業時間、餐飲則依照最後點餐時間為判斷基準，請使用者務必事先確認各聯名活動實際營業時間。</li>
+              <li>住宿、JR 萩駅等不以一般營業時間判斷的地點，會保留位置與合作資訊，但不顯示即時營業狀態。</li>
               <li>
-                住宿、JR 萩駅等不以一般營業時間判斷的地點，會保留位置與合作資訊，但不顯示即時營業狀態。地圖以萩市區景點為主；萩・石見空港、レストランまつおか、道の駅 萩・さんさん三見不顯示於地圖，仍可由日期清單查看完整資訊。
+                地圖以萩市區景點為主，故較遙遠的
+                <span className="mx-1 underline decoration-brand-line underline-offset-4">萩・石見空港</span>、
+                <span className="mx-1 underline decoration-brand-line underline-offset-4">レストランまつおか</span>、
+                <span className="mx-1 underline decoration-brand-line underline-offset-4">道の駅 萩・さんさん三見</span>等景點不顯示於地圖上，仍可由日期清單查看完整資訊。
               </li>
             </ul>
           </Section>

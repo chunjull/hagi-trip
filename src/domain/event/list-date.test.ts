@@ -41,8 +41,8 @@ describe("getDefaultListDate", () => {
     expect(getDefaultListDate(new Date("2026-10-17T15:30:00.000Z"))).toBe("2026-10-18");
   });
 
-  it("uses the last event date after the event", () => {
-    expect(getDefaultListDate(new Date("2027-01-01T00:00:00.000Z"))).toBe("2026-12-31");
+  it("uses the frozen date after the Taiwan cutoff", () => {
+    expect(getDefaultListDate(new Date("2027-01-01T00:00:00.000Z"))).toBe("2026-10-10");
   });
 });
 
@@ -56,6 +56,14 @@ describe("getInitialListDate", () => {
   it("falls back for invalid and out-of-range query dates", () => {
     expect(getInitialListDate("invalid", beforeEvent)).toBe("2026-10-01");
     expect(getInitialListDate("2027-01-01", beforeEvent)).toBe("2026-10-01");
+  });
+
+  it("still accepts a selected date immediately before the Taiwan cutoff", () => {
+    expect(getInitialListDate("2026-11-28", new Date("2026-12-31T23:59:59.999+08:00"))).toBe("2026-11-28");
+  });
+
+  it.each([null, "2026-10-18", "2026-11-28", "invalid"])("locks the archive date regardless of query %s", (queryDate) => {
+    expect(getInitialListDate(queryDate, new Date("2027-01-01T00:00:00+08:00"))).toBe("2026-10-10");
   });
 });
 

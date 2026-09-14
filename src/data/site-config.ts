@@ -31,4 +31,10 @@ export const SITE_CONFIG = {
   mode: {
     type: "live",
   } as SiteMode,
+
+  archive: {
+    // 臺灣時間 2026/12/31 結束後自動切換。
+    startsAt: "2027-01-01T00:00:00+08:00",
+    frozenDateTime: "2026-10-10T10:10:00+09:00",
+  },
 } as const;
