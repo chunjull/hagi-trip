@@ -78,7 +78,7 @@ const NoBusinessInfoDateDialog = ({ date, events, onSelectDate, open }: NoBusine
           <p className="mt-2 text-xs leading-5 text-ink-soft">必須選擇 2026/10/01～2026/12/31 之間、且不是 2026/11/28 的日期。</p>
         </div>
 
-        <Image alt="銀魂漫畫：我是來地獄掀起革命的。" className="mt-5 h-auto w-full rounded-md" height={640} src="/1128.jpg" unoptimized width={913} />
+        <Image alt="銀魂漫畫：為了保護這個國家請助我一臂之力吧！" className="mt-4 h-auto w-full rounded-md" height={640} src="/11-28.jpg" unoptimized width={913} />
       </div>
     </dialog>
   );
